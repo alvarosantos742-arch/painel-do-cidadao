@@ -1430,7 +1430,7 @@ function renderWorld(){
   $("w-ex").textContent = m.ex;
   const max = Math.max(...list.map(([,a])=>a[m.i]));
   const shown = list.map((e,i)=>[e,i]); if (wWorst) shown.reverse();
-  $("wrank").innerHTML = shown.map(([[k,a],i])=>`<div class="wr wr2 ${k==="BR"?"me":""} ${n-1-i<Math.floor(n/2)?"pior":pmLabel(n-1-i,n)==="no meio"?"meio":""}"><span class="n">${pmLabel(n-1-i,n)}</span><span>${a[0]}</span><span class="t"><b style="width:${a[m.i]/max*100}%;background:var(${shade[k]})"></b></span><span class="v">${m.fmt(a[m.i])}</span></div>`).join("");
+  $("wrank").innerHTML = shown.map(([[k,a],i])=>`<div class="wr ${k==="BR"?"me":""}"><span class="n">${i+1}º</span><span>${a[0]}</span><span class="t"><b style="width:${a[m.i]/max*100}%;background:var(${shade[k]})"></b></span><span class="v">${m.fmt(a[m.i])}</span></div>`).join("");
   Object.keys(WMET).forEach(k=>$("w-"+k).setAttribute("aria-pressed", k===wmetric));
   $("w-dir").setAttribute("aria-pressed", wWorst); $("w-dir").textContent = wWorst ? "Do pior para o melhor" : "Do melhor para o pior";
   const host = $("worldmap");
@@ -1829,8 +1829,8 @@ function renderRank(){
   const list = UF_KEYS.filter(k=>U(k)[rkField]!==null).sort((a,b)=> hi ? U(a)[rkField]-U(b)[rkField] : U(b)[rkField]-U(a)[rkField]);
   const n = list.length, max = Math.max(...list.map(k=>U(k)[rkField])), me = myUF();
   const sh = ["--s5","--s4","--s3","--s2","--s1"];
-  $("rk-ex").textContent = m.ex + " Começa pelo 1º pior e termina no 1º melhor.";
-  $("rk-list").innerHTML = list.map((k,i)=>`<a class="wr wr2 ${k===me?"me":""} ${i<Math.floor(n/2)?"pior":pmLabel(i,n)==="no meio"?"meio":""}" href="#${k.toLowerCase()}" style="color:inherit;text-decoration:none"><span class="n">${pmLabel(i,n)}</span><span>${U(k).nome}</span><span class="t"><b style="width:${U(k)[rkField]/max*100}%;background:var(${sh[Math.min(4,Math.floor(i/n*5))]})"></b></span><span class="v">${m.fmt(U(k)[rkField])}</span></a>`).join("");
+  $("rk-ex").textContent = m.ex + " No topo, o pior; embaixo, o melhor.";
+  $("rk-list").innerHTML = list.map((k,i)=>`<a class="wr ${k===me?"me":""}" href="#${k.toLowerCase()}" style="color:inherit;text-decoration:none"><span class="n">${n-i}º</span><span>${U(k).nome}</span><span class="t"><b style="width:${U(k)[rkField]/max*100}%;background:var(${sh[Math.min(4,Math.floor(i/n*5))]})"></b></span><span class="v">${m.fmt(U(k)[rkField])}</span></a>`).join("");
   document.querySelectorAll("#rk-chips [data-rk]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.rk===rkField));
 }
 function wireRank(){ if (!$("rk-list")) return; renderRank(); $("rk-chips").addEventListener("click", e=>{ const b=e.target.closest("[data-rk]"); if(!b) return; rkField=b.dataset.rk; renderRank(); }); }
