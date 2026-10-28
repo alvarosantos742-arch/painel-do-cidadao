@@ -2061,4 +2061,7 @@ addEventListener("hashchange", ()=>{ route(); window.scrollTo({top:0, behavior: 
 route(); tick(); setInterval(tick, 1000);
 </script>
 
+<script>window.goatcounter={path:function(p){return location.pathname+(location.hash&&location.hash!=="#brasil"?location.hash:"")}};
+addEventListener("hashchange",function(){if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:location.pathname+(location.hash&&location.hash!=="#brasil"?location.hash:"")})});</script>
+<script data-goatcounter="https://paineldocidao.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
