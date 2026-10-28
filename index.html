@@ -745,6 +745,13 @@ function congressoView(){
     <button type="button" class="btn" id="rx-dep" aria-pressed="${rx.casa==="dep"}">Deputados · 513</button>
     <button type="button" class="btn" id="rx-sen" aria-pressed="${rx.casa==="sen"}">Senadores · 81</button>
   </div>
+  <section class="box klegend" aria-labelledby="kl-t">
+    <h3 id="kl-t">Como ler: o que é cada sigla</h3>
+    <p class="muted">A porcentagem é a <b style="border:0;font-family:inherit;font-size:inherit;padding:0;margin:0">presença</b>: quantas votações nominais do Plenário a pessoa votou, desde fevereiro de 2025, contando só os períodos em que estava no mandato (licenças e cargos de ministro não contam como falta).</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 4px"><span class="kchip S">Sim</span><span class="kchip N">Não</span><span class="kchip X">Não votou</span></div>
+    ${(rx.casa==="dep"?KDEP:KSEN).map(([s,t,d])=>`<div><b>${s}</b>${t} <span class="src">(${d})</span></div>`).join("")}
+    <p class="src">Fonte: dados abertos da ${rx.casa==="dep"?"Câmara dos Deputados":"Senado Federal"}, consultados em ${DATA.raioxAtualizado.split("-").reverse().join("/")}. Gastos da cota parlamentar ainda não incluídos.</p>
+  </section>
   <section class="box" style="display:grid;gap:14px">
     <div class="rx-filters">
       <label for="rx-q">Procurar por nome ou partido<input id="rx-q" type="search" placeholder="Ex.: Tabata, PL, PT" value="${rx.q}" autocomplete="off"></label>
@@ -755,12 +762,7 @@ function congressoView(){
     <div class="rx-list" id="rx-list"></div>
     <div id="rx-more"></div>
   </section>
-  <section class="box klegend" aria-labelledby="kl-t">
-    <h3 id="kl-t">O que significam os votos</h3>
-    <p class="muted">A porcentagem é a <b style="border:0;font-family:inherit;font-size:inherit;padding:0;margin:0">presença</b>: quantas votações nominais do Plenário a pessoa votou, desde fevereiro de 2025, contando só os períodos em que estava no mandato (licenças e cargos de ministro não contam como falta).</p>
-    ${(rx.casa==="dep"?KDEP:KSEN).map(([s,t,d])=>`<div><b>${s}</b>${t} <span class="src">(${d})</span></div>`).join("")}
-    <p class="src">Fonte: dados abertos da ${rx.casa==="dep"?"Câmara dos Deputados":"Senado Federal"}, consultados em ${DATA.raioxAtualizado.split("-").reverse().join("/")}. Gastos da cota parlamentar ainda não incluídos.</p>
-  </section>`;
+`;
 }
 function renderRx(){
   const list = rxFiltered();
@@ -781,6 +783,11 @@ function repsHTML(k){
   const deps = DATA.raiox.dep.filter(r=>r[2]===k), sens = DATA.raiox.sen.filter(r=>r[2]===k);
   return `<section class="box" style="display:grid;gap:12px" aria-labelledby="reps-t">
     <div><span class="eyebrow">Congresso atual · até janeiro de 2027</span><h2 id="reps-t" style="font-size:1.4rem">Senadores e deputados de ${U(k).nome}</h2></div>
+    <div class="klegend box soft" style="padding:12px 14px"><b style="border:0;padding:0;margin:0;font-family:inherit;font-size:.85rem">Como ler</b>
+      <div style="display:flex;flex-wrap:wrap;gap:6px"><span class="kchip S">Sim</span><span class="kchip N">Não</span><span class="kchip X">Não votou</span></div>
+      ${KDEP.map(([s,t])=>`<div><b>${s}</b>${t}</div>`).join("")}
+      <span class="src">A porcentagem é a presença nas votações do Plenário desde fevereiro de 2025.</span>
+    </div>
     <h3>Senadores (${sens.length})</h3>
     <div class="rx-list">${sens.map(r=>rxRow(r,"sen")).join("")}</div>
     <h3>Deputados federais (${deps.length})</h3>
