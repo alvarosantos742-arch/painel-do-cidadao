@@ -210,12 +210,12 @@ details[open] .more{display:none}
 .histbox .pr .tag,.car-track .tag{align-self:start;justify-self:start}
 .gprom summary{cursor:pointer;color:var(--fg);padding:6px 0}
 .gprom[open] summary{margin-bottom:8px}
-.wr{display:grid;grid-template-columns:1.8rem 8.5rem 1fr 4.6rem;gap:8px;align-items:center;padding:3px 4px;border-radius:6px}
+.wr{display:grid;grid-template-columns:1.8rem minmax(0,8.5rem) 1fr minmax(4.6rem,max-content);gap:8px;align-items:center;padding:3px 4px;border-radius:6px}
 .wr.me{background:var(--wash);font-weight:700;outline:1.5px solid var(--fg)}
 .wr .n{font-family:var(--f-mono);font-size:.78rem;color:var(--faint)}
 .wr .t{height:8px;border-radius:4px;background:var(--g1);overflow:hidden}
 .wr .t b{display:block;height:100%;border-radius:4px}
-.wr .v{font-family:var(--f-mono);text-align:right;font-size:.85rem}
+.wr .v{font-family:var(--f-mono);text-align:right;font-size:.85rem;white-space:nowrap}
 @media (max-width:520px){.wr{grid-template-columns:1.6rem 6.4rem 1fr 4rem}}
 
 /* calculadora */
@@ -1461,7 +1461,8 @@ function renderMap(){
 
 /* ============ BRASIL NO MUNDO ============ */
 const WMET = {
-  pib:{i:1,label:"Renda",better:"high",fmt:v=>"US$ "+nf.format(v),ex:"Riqueza produzida por pessoa em um ano, ajustada pelo custo de vida (PIB per capita PPC, FMI, estimativa 2026)."},
+  /* PPC → reais: ancorado no PIB per capita do Brasil em reais (IBGE 2025: R$ 59.687,49), dividido pelo valor do Brasil em dólares PPC; ÷12 = por mês */
+  pib:{i:1,label:"Renda",better:"high",fmt:v=>"R$ "+nf.format(Math.round(v*59687.49/DATA.mundo.BR[1]/12/10)*10),unit:" por pessoa, por mês",ex:"Quanto cada país produz por pessoa, por mês, em reais e já ajustado ao custo de vida: é como se tudo custasse o mesmo que no Brasil. Não é salário, é a riqueza do país dividida pela população. No Brasil dá cerca de R$ 4.970 por mês (PIB per capita de R$ 59.687 em 2025, IBGE). Os outros países seguem a mesma conta, a partir do PIB per capita PPC do FMI (estimativa 2026)."},
   hom:{i:2,label:"Segurança",better:"low",fmt:v=>f1(v),ex:"Homicídios por 100 mil habitantes (UNODC, ano mais recente de cada país)."},
   idh:{i:4,label:"Desenvolvimento",better:"high",fmt:v=>v.toFixed(3).replace(".",","),ex:"Índice de Desenvolvimento Humano, de 0 a 1: junta renda, educação e expectativa de vida (PNUD, dados de 2023)."}
 };
@@ -1494,7 +1495,7 @@ function renderWorld(){
   const shade = {}; list.forEach(([k],i)=> shade[k] = ["--s1","--s2","--s3","--s4","--s5"][Math.min(4, Math.floor(i/n*5))]);
   const pos = list.findIndex(([k])=>k==="BR")+1;
   const br = DATA.mundo.BR;
-  $("w-summary").innerHTML = `<div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap"><span class="big">${pos}º</span><span class="plain">lugar do Brasil entre ${n} países em <b>${m.label.toLowerCase()}</b> (${m.fmt(br[m.i])}).</span></div>`;
+  $("w-summary").innerHTML = `<div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap"><span class="big">${pos}º</span><span class="plain">lugar do Brasil entre ${n} países em <b>${m.label.toLowerCase()}</b> (${m.fmt(br[m.i])}${m.unit||""}).</span></div>`;
   $("w-ex").textContent = m.ex;
   const max = Math.max(...list.map(([,a])=>a[m.i]));
   const shown = list.map((e,i)=>[e,i]); if (wWorst) shown.reverse();
