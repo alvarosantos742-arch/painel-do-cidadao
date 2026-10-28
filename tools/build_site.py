@@ -15,7 +15,7 @@ assert out.count('<title>')==1, out.count('<title>')
 # Estatísticas de visitas (GoatCounter, sem cookies) — só no domínio próprio; conta também as abas (#brasil, #pr...)
 gc='''<script>window.goatcounter={path:function(p){return location.pathname+(location.hash&&location.hash!=="#brasil"?location.hash:"")}};
 addEventListener("hashchange",function(){if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:location.pathname+(location.hash&&location.hash!=="#brasil"?location.hash:"")})});</script>
-<script data-goatcounter="https://paineldocidao.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://paineldocidadao.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 '''
 i=out.rindex('</body>'); out=out[:i]+gc+out[i:]
 assert out.count('data-goatcounter=')==1
