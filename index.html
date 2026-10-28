@@ -6,7 +6,11 @@
 <meta property="og:url" content="https://paineldocidadao.com.br/">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23111'/%3E%3Cpath d='M8 22V14M14 22V9M20 22V16M26 22V12' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
-<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.wr.wr2{grid-template-columns:5rem minmax(0,7.5rem) 1fr 4.2rem}
+.wr.wr2 .n{font-family:var(--f-body);font-weight:700;font-size:.82rem;color:var(--good);white-space:nowrap}
+.wr.wr2.pior .n{color:var(--bad)}
+.wr.wr2.meio .n{color:var(--muted)}
+</style></head><body>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -1426,7 +1430,7 @@ function renderWorld(){
   $("w-ex").textContent = m.ex;
   const max = Math.max(...list.map(([,a])=>a[m.i]));
   const shown = list.map((e,i)=>[e,i]); if (wWorst) shown.reverse();
-  $("wrank").innerHTML = shown.map(([[k,a],i])=>`<div class="wr ${k==="BR"?"me":""}"><span class="n">${i+1}º</span><span>${a[0]}</span><span class="t"><b style="width:${a[m.i]/max*100}%;background:var(${shade[k]})"></b></span><span class="v">${m.fmt(a[m.i])}</span></div>`).join("");
+  $("wrank").innerHTML = shown.map(([[k,a],i])=>`<div class="wr wr2 ${k==="BR"?"me":""} ${n-1-i<Math.floor(n/2)?"pior":pmLabel(n-1-i,n)==="no meio"?"meio":""}"><span class="n">${pmLabel(n-1-i,n)}</span><span>${a[0]}</span><span class="t"><b style="width:${a[m.i]/max*100}%;background:var(${shade[k]})"></b></span><span class="v">${m.fmt(a[m.i])}</span></div>`).join("");
   Object.keys(WMET).forEach(k=>$("w-"+k).setAttribute("aria-pressed", k===wmetric));
   $("w-dir").setAttribute("aria-pressed", wWorst); $("w-dir").textContent = wWorst ? "Do pior para o melhor" : "Do melhor para o pior";
   const host = $("worldmap");
@@ -1810,6 +1814,8 @@ document.addEventListener("click", e=>{ const a = e.target.closest && e.target.c
 
 /* ============ RANKING DOS ESTADOS (do pior para o melhor) ============ */
 let rkField = "d26";
+/* posição contada a partir do pior (0 = pior de todos) → "1º pior", …, "no meio", …, "1º melhor" */
+function pmLabel(w, n){ const h = Math.floor(n/2); return w < h ? `${w+1}º pior` : (n-1-w) < h ? `${n-w}º melhor` : "no meio"; }
 function rankingHTML(){
   return `<section class="box" style="display:grid;gap:12px" aria-labelledby="rk-t">
     <div><span class="eyebrow">Ranking</span><h2 id="rk-t" style="font-size:1.35rem">Estados do pior para o melhor</h2></div>
@@ -1823,8 +1829,8 @@ function renderRank(){
   const list = UF_KEYS.filter(k=>U(k)[rkField]!==null).sort((a,b)=> hi ? U(a)[rkField]-U(b)[rkField] : U(b)[rkField]-U(a)[rkField]);
   const n = list.length, max = Math.max(...list.map(k=>U(k)[rkField])), me = myUF();
   const sh = ["--s5","--s4","--s3","--s2","--s1"];
-  $("rk-ex").textContent = m.ex + " No topo, o pior; embaixo, o melhor.";
-  $("rk-list").innerHTML = list.map((k,i)=>`<a class="wr ${k===me?"me":""}" href="#${k.toLowerCase()}" style="color:inherit;text-decoration:none"><span class="n">${n-i}º</span><span>${U(k).nome}</span><span class="t"><b style="width:${U(k)[rkField]/max*100}%;background:var(${sh[Math.min(4,Math.floor(i/n*5))]})"></b></span><span class="v">${m.fmt(U(k)[rkField])}</span></a>`).join("");
+  $("rk-ex").textContent = m.ex + " Começa pelo 1º pior e termina no 1º melhor.";
+  $("rk-list").innerHTML = list.map((k,i)=>`<a class="wr wr2 ${k===me?"me":""} ${i<Math.floor(n/2)?"pior":pmLabel(i,n)==="no meio"?"meio":""}" href="#${k.toLowerCase()}" style="color:inherit;text-decoration:none"><span class="n">${pmLabel(i,n)}</span><span>${U(k).nome}</span><span class="t"><b style="width:${U(k)[rkField]/max*100}%;background:var(${sh[Math.min(4,Math.floor(i/n*5))]})"></b></span><span class="v">${m.fmt(U(k)[rkField])}</span></a>`).join("");
   document.querySelectorAll("#rk-chips [data-rk]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.rk===rkField));
 }
 function wireRank(){ if (!$("rk-list")) return; renderRank(); $("rk-chips").addEventListener("click", e=>{ const b=e.target.closest("[data-rk]"); if(!b) return; rkField=b.dataset.rk; renderRank(); }); }
