@@ -249,6 +249,19 @@ tbody tr:hover{background:var(--wash)}
 .feed .meta{font-size:.78rem;color:var(--faint)}
 .feed .new{font-weight:700;color:var(--bad);margin-right:4px}
 
+details.deep{border-left:3px solid var(--fg);padding:2px 0 2px 12px;margin-top:2px}
+details.deep summary{cursor:pointer;font-weight:700;font-size:.92rem;min-height:40px;display:flex;align-items:center;gap:6px;list-style:none}
+details.deep summary::-webkit-details-marker{display:none}
+details.deep summary::before{content:"+";font-family:var(--f-mono);font-size:1.1rem;width:1.2rem}
+details.deep[open] summary::before{content:"−"}
+.deep .part{display:grid;gap:2px;margin:8px 0}
+.deep .part b{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.deep .part p{font-size:.95rem}
+.deep .lados{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.deep .lados div{background:var(--wash);border-radius:10px;padding:10px;font-size:.92rem}
+@media (max-width:560px){.deep .lados{grid-template-columns:1fr}}
+.feed .src-link{font-size:.85rem;font-weight:700}
+
 /* candidatos */
 .cands{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
 .cand{display:grid;gap:10px;align-content:start}
@@ -441,18 +454,18 @@ const DATA = {
   },
   /* notícias de política por instituição: {d, inst, t, f}. inst: Presidência, Senado, Câmara, Congresso, STF, TSE, Partidos */
   noticias: [
-    { d:"2026-10-27", inst:"STF", t:"Terminou sem entrega o prazo dado por Alexandre de Moraes para Flávio Bolsonaro entregar os passaportes à PF, em inquérito sobre suspeita de lavagem de dinheiro; os documentos foram cancelados. Ele nega irregularidades.", f:"Estadão Conteúdo / DGABC" },
+    { d:"2026-10-27", inst:"STF", t:"Terminou sem entrega o prazo dado por Alexandre de Moraes para Flávio Bolsonaro entregar os passaportes à PF, em inquérito sobre suspeita de lavagem de dinheiro; os documentos foram cancelados. Ele nega irregularidades.", f:"Estadão Conteúdo / DGABC", o:"Em 26/10, o ministro Alexandre de Moraes (STF) mandou Flávio Bolsonaro entregar à Polícia Federal os passaportes comum e diplomático em 24 horas, dentro de um inquérito sobre suspeita de lavagem de dinheiro. O prazo acabou às 11h de 27/10 sem a entrega, e a PF cancelou os dois documentos no sistema.", p:"Com os passaportes cancelados, ele não pode usá-los para sair ou voltar ao país. A PF também vai informar ao STF que a ordem não foi cumprida, o que pode levar a novas medidas.", v:"Cabe a Moraes decidir o que fazer diante do descumprimento. O paradeiro de Flávio não foi confirmado oficialmente: Reuters e New York Times relataram viagem aos Estados Unidos; aliados dizem que ele não deixou o país.", lados:{a:"O governo acionou autoridades da Argentina citando possível risco de fuga, e a PF verifica registros de fronteira.", c:"Flávio nega irregularidades e, em vídeo no dia 26, disse que entregaria os passaportes e que nunca pensou em sair do país."}, u:"https://www.cnnbrasil.com.br/blogs/elijonasmaia/politica/pf-cancela-passaportes-de-flavio-bolsonaro-apos-decisao-de-moraes/" },
     { d:"2026-10-27", inst:"STF", t:"A vaga deixada por Luís Roberto Barroso no STF segue aberta; Lula pode indicar até quatro ministros até o fim do novo mandato.", f:"Rádio Senado" },
-    { d:"2026-10-27", inst:"Senado", t:"O Senado deve fixar até 15 de dezembro a alíquota da CBS, tributo da reforma tributária que começa a ser cobrado em janeiro de 2027.", f:"Rádio Senado" },
+    { d:"2026-10-27", inst:"Senado", t:"O Senado deve fixar até 15 de dezembro a alíquota da CBS, tributo da reforma tributária que começa a ser cobrado em janeiro de 2027.", f:"Rádio Senado", o:"A CBS é o novo imposto federal sobre o consumo criado pela reforma tributária. Ela substitui o PIS e a Cofins. O Tribunal de Contas da União (TCU) deve mandar ao Senado até 30/10 o cálculo da alíquota, e o Senado tem até 15 de dezembro para fixá-la.", p:"A alíquota é a porcentagem de imposto cobrada sobre produtos e serviços. Ela influencia os preços e a forma como as empresas vão se organizar a partir de 2027.", v:"A cobrança começa em janeiro de 2027. Em 2026, as empresas apenas testam o registro do novo imposto nas notas fiscais, sem pagar.", u:"https://www12.senado.leg.br/radio/1/noticia/2026/10/27/reforma-tributaria-aliquota-da-cbs-sera-definida-pelo-senado" },
     { d:"2026-10-27", inst:"Partidos", t:"Alfredo Gaspar (PL-AL), vice na chapa de Flávio Bolsonaro, reconheceu a derrota em vídeo, sem citar Lula.", f:"Estadão Conteúdo / DGABC" },
-    { d:"2026-10-26", inst:"Presidência", t:"Lula recebeu Hugo Motta e Davi Alcolumbre no Alvorada e comunicou que o PT apoiará a recondução dos dois ao comando das Casas em fevereiro de 2027.", f:"Estadão Conteúdo / O Liberal" },
-    { d:"2026-10-27", inst:"TSE", t:"Há 15 ações no TSE entre as duas campanhas: 8 do lado de Flávio Bolsonaro contra Lula e 7 do lado de Lula contra Flávio. Nenhuma foi julgada.", f:"O Povo / O Globo" },
-    { d:"2026-10-27", inst:"Senado", t:"A PEC da Segurança Pública, já aprovada na Câmara e na CCJ, segue sem data para votação no Plenário do Senado.", f:"Rádio Senado" },
+    { d:"2026-10-26", inst:"Presidência", t:"Lula recebeu Hugo Motta e Davi Alcolumbre no Alvorada e comunicou que o PT apoiará a recondução dos dois ao comando das Casas em fevereiro de 2027.", f:"Estadão Conteúdo / O Liberal", o:"Um dia depois da reeleição, Lula recebeu no Palácio da Alvorada os presidentes da Câmara, Hugo Motta (Republicanos-PB), e do Senado, Davi Alcolumbre (União-AP), e disse que o PT vai apoiar a recondução dos dois.", p:"Quem preside a Câmara e o Senado decide o que entra em votação. Para aprovar seus projetos no 4º mandato, o governo precisa de boa relação com os dois.", v:"A eleição para o comando das duas Casas é em 1º de fevereiro de 2027. No Senado, Rogério Marinho (PL-RN) e Tereza Cristina (PP-MS) também querem o cargo; na Câmara, o PL ainda não decidiu se lança Sóstenes Cavalcante (PL-RJ) ou apoia Motta.", lados:{a:"Lula pediu prioridade para a PEC da Segurança e prometeu criar o Ministério da Segurança depois da aprovação.", c:"O PL, maior bancada nas duas Casas, promete fazer oposição ao novo mandato."}, u:"https://www.terra.com.br/noticias/brasil/politica/lula-diz-a-motta-e-alcolumbre-que-pt-vai-apoiar-reconducao-dos-dois-e-acerta-pauta-no-congresso,4c585f6830b8aabb0ce9155221e78ec84w9qrxtc.html" },
+    { d:"2026-10-27", inst:"TSE", t:"Há 15 ações no TSE entre as duas campanhas: 8 do lado de Flávio Bolsonaro contra Lula e 7 do lado de Lula contra Flávio. Nenhuma foi julgada.", f:"O Povo / O Globo", o:"As duas campanhas entraram com ações no TSE pedindo a cassação da chapa adversária: 8 do lado de Flávio Bolsonaro contra Lula e 7 do lado de Lula contra Flávio. Nenhuma foi julgada até agora.", p:"Se uma chapa for cassada, os eleitos perdem o mandato. O TSE nunca cassou uma chapa presidencial; em 2017, rejeitou o pedido contra a chapa Dilma-Temer.", v:"Novos pedidos podem ser feitos até a diplomação dos eleitos, em dezembro. Não há data para os julgamentos.", lados:{a:"A campanha de Lula diz que Flávio foi beneficiado nas redes da Meta e cita suspeitas sobre o financiamento ligado ao filme Dark Horse. A Meta nega favorecer candidatos.", c:"Flávio Bolsonaro diz que Lula cometeu abuso de poder econômico durante a campanha."}, u:"https://www.opovo.com.br/noticias/mundo/2026/10/27/flavio-altera-rota-para-buscar-reversao-da-derrota.html" },
+    { d:"2026-10-27", inst:"Senado", t:"A PEC da Segurança Pública, já aprovada na Câmara e na CCJ, segue sem data para votação no Plenário do Senado.", f:"Rádio Senado", o:"A PEC da Segurança Pública coloca na Constituição o Sistema Único de Segurança Pública (SUSP), endurece regras para chefes de facções e milícias, permite polícias civis municipais e obriga a União a repassar metade de dois fundos federais da área para estados e municípios.", p:"A proposta muda quem faz o quê no combate ao crime organizado e quanto dinheiro chega aos estados e cidades. A criação do Ministério da Segurança Pública depende dela.", v:"Falta a votação no Plenário do Senado, em dois turnos, com pelo menos 49 votos. Se o Senado mudar o texto, ele volta para a Câmara. Ainda não há data.", u:"https://www12.senado.leg.br/radio/1/noticia/2026/10/27/pec-da-seguranca-publica-amplia-o-papel-da-uniao-contra-o-crime-organizado" },
     { d:"2026-10-27", inst:"STF", t:"STF prevê para quarta-feira (28) julgar a lei de Minas Gerais que restringe o fretamento de ônibus por aplicativo, após cinco adiamentos.", f:"Diário do Transporte" },
     { d:"2026-10-26", inst:"Partidos", t:"O PL reconheceu o resultado da eleição em nota assinada por Valdemar Costa Neto, mas pediu esclarecimentos sobre o pleito.", f:"O Povo" },
     { d:"2026-10-26", inst:"TSE", t:"Pedidos de cassação de chapas podem ser apresentados por partidos, candidatos ou Ministério Público até a diplomação, em dezembro.", f:"O Povo" },
     { d:"2026-10-25", inst:"Presidência", t:"Lula, reeleito, fez o primeiro discurso em São Paulo e prometeu \"mudar o jeito de governar\".", f:"Agência Brasil" },
-    { d:"2026-10-16", inst:"Congresso", t:"Congresso promulgou o fim da escala 6x1: jornada cai de 44h para 42h em 60 dias e para 40h um ano depois.", f:"CNN Brasil" },
+    { d:"2026-10-16", inst:"Congresso", t:"Congresso promulgou o fim da escala 6x1: jornada cai de 44h para 42h em 60 dias e para 40h um ano depois.", f:"CNN Brasil", o:"A mudança na Constituição que acaba com a escala 6x1 foi promulgada em 16/10. Quem trabalha com carteira assinada passa a ter dois dias de descanso por semana, sem corte de salário.", p:"A jornada máxima cai de 44 para 42 horas por semana em 60 dias e para 40 horas um ano depois. Isso afeta principalmente quem trabalha no comércio e nos serviços.", v:"As empresas têm cerca de 60 dias para adotar a escala com duas folgas (5x2) e as 42 horas; a regulamentação deve detalhar a transição.", lados:{a:"A PEC foi aprovada por 75 votos a 1 no Senado. O Sebrae avaliou a mudança como uma oportunidade para pequenos negócios.", c:"Entidades como CNI, CNC e CNT alertam para aumento de custos e de preços, e a Abrasel diz que pode faltar mão de obra."}, u:"https://www.cnnbrasil.com.br/politica/congresso-nacional-promulga-fim-da-escala-de-trabalho-6x1/" },
     { d:"2026-10-15", inst:"Senado", t:"Davi Alcolumbre retirou da pauta a votação da PEC da Segurança Pública prevista para o dia.", f:"Agência Senado" },
     { d:"2026-10-14", inst:"Senado", t:"Senado aprovou a PEC do fim da escala 6x1 por 75 votos a 1, em dois turnos.", f:"Agência Brasil" },
     { d:"2026-10-14", inst:"Câmara", t:"Câmara aprovou aumentar o limite de faturamento do MEI de R$ 81 mil para R$ 110 mil em 2027 e R$ 140 mil em 2028.", f:"Agência Brasil" },
@@ -1484,7 +1497,7 @@ const INST_GROUPS = { todas:["Todas",null], pres:["Presidência",["Presidência"
 let feedFilter = "todas";
 function feedHTML(){
   return `<section class="box" style="display:grid;gap:12px" aria-labelledby="pa-t">
-    <div><span class="eyebrow">Atualizado todo dia às 19h47</span><h2 id="pa-t">Política agora</h2><p class="muted">O que está acontecendo no governo, no Congresso, no STF e no TSE. Mais recentes primeiro.</p></div>
+    <div><span class="eyebrow">Atualizado todo dia às 19h47</span><h2 id="pa-t">Política agora</h2><p class="muted">O que está acontecendo no governo, no Congresso, no STF e no TSE. Mais recentes primeiro. Toque em "Entenda esta notícia" para ver mais.</p></div>
     <div class="chips" role="group" aria-label="Filtrar notícias">${Object.entries(INST_GROUPS).map(([k,[l]])=>`<button type="button" class="btn" id="fd-${k}" data-fd="${k}" aria-pressed="${feedFilter===k}">${l}</button>`).join("")}</div>
     <div class="feed" id="feed"></div>
   </section>`;
@@ -1494,7 +1507,13 @@ function renderFeed(){
   const ref = new Date(DATA.updated+"T12:00:00-03:00");
   const items = DATA.noticias.filter(n=>!g || g.includes(n.inst)).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,12);
   $("feed").innerHTML = items.length ? `<ul>${items.map(n=>{ const fresh = (ref - new Date(n.d+"T12:00:00-03:00"))/864e5 <= 1;
-    return `<li><span class="inst">${n.inst}</span><span class="txt">${fresh?`<span class="new">Novo</span>`:""}${n.t}</span><span class="meta">${fdate(n.d)} · ${n.f}</span></li>`; }).join("")}</ul>` : `<p class="muted">Nenhuma notícia neste tema por enquanto.</p>`;
+    const deepH = n.o ? `<details class="deep"><summary>Entenda esta notícia</summary>
+      <div class="part"><b>O que aconteceu</b><p>${n.o}</p></div>
+      <div class="part"><b>Por que importa</b><p>${n.p}</p></div>
+      <div class="part"><b>O que vem depois</b><p>${n.v}</p></div>
+      ${n.lados?`<div class="part"><b>O que dizem os lados</b><div class="lados"><div>${n.lados.a}</div><div>${n.lados.c}</div></div></div>`:""}
+    </details>` : "";
+    return `<li><span class="inst">${n.inst}</span><span class="txt">${fresh?`<span class="new">Novo</span>`:""}${n.t}</span><span class="meta">${fdate(n.d)} · ${n.f}${n.u?` · <a class="src-link" href="${n.u}" target="_blank" rel="noopener">Ler na fonte ›</a>`:""}</span>${deepH}</li>`; }).join("")}</ul>` : `<p class="muted">Nenhuma notícia neste tema por enquanto.</p>`;
   Object.keys(INST_GROUPS).forEach(k=>$("fd-"+k).setAttribute("aria-pressed", k===feedFilter));
 }
 function wireFeed(){
