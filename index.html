@@ -128,6 +128,15 @@ select{font:700 1rem var(--f-body);color:var(--fg);background:var(--bg);border:1
 .tag{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.82rem;border:1.5px solid var(--fg);border-radius:999px;padding:3px 11px;width:max-content;max-width:100%;background:var(--bg)}
 .tag.good{color:var(--good);border-color:var(--good);background:var(--good-bg)}
 .tag.bad{background:var(--bad);color:#fff;border-color:var(--bad)}
+.tag.part{color:var(--good);border-color:var(--good);border-style:dashed;background:var(--bg)}
+.car-track .box.k-part{border-top-color:var(--s2)}
+.lermais{margin-top:4px}
+.lermais summary{cursor:pointer;font-weight:700;font-size:.9rem;padding:6px 0;list-style:none}
+.lermais summary::-webkit-details-marker{display:none}
+.lermais[open] summary .ab{display:none}
+.lermais summary .fe{display:none}
+.lermais[open] summary .fe{display:inline}
+.lermais ul{margin:6px 0 0 18px;display:grid;gap:8px;font-size:.92rem;line-height:1.45}
 .tag.na{border-style:dashed;color:var(--muted);border-color:var(--g3)}
 .cmp{display:grid;gap:8px;font-size:.9rem}
 .cmp .row{display:grid;grid-template-columns:6.6rem 1fr 3.6rem;gap:10px;align-items:center}
@@ -452,7 +461,7 @@ const DATA = {
   updated: "2026-10-27",
   /* Novidades: {d:"AAAA-MM-DD", uf:"XX" ou "", t:"texto curto"}. A tarefa diária acrescenta itens; a página mostra os últimos 7 dias. */
   changes: [
-    { d:"2026-10-27", uf:"", t:"Promessa do fim da escala 6x1 marcada como cumprida: o Congresso promulgou a mudança em 16/10." },
+    { d:"2026-10-28", uf:"", t:"Promessas do presidente revisadas: fim da escala 6x1 passou a \"parcialmente aprovada\" (40h só no fim de 2027 e com exceções); cada promessa ganhou \"Ler mais\" com o que aconteceu." },
     { d:"2026-10-27", uf:"", t:"Painel atualizado com os 27 governadores eleitos e os prefeitos atuais das capitais." },
     { d:"2026-10-26", uf:"", t:"Previsão dos bancos para a inflação de 2026 caiu de 5,22% para 5,19% (Boletim Focus)." },
     { d:"2026-10-26", uf:"", t:"TSE concluiu a apuração: Lula reeleito com 51,79% dos votos válidos." },
@@ -473,12 +482,35 @@ const DATA = {
     /* bancadas: [nome, cadeiras, cor do partido] — federações usam a cor do maior partido */
     camara: [["PL",121,"#1b3f94"],["PT · PCdoB · PV",88,"#cc1f2f"],["União · PP",87,"#3a7bd5"],["PSD",43,"#f2a900"],["Republicanos",41,"#0b8f9e"],["MDB",36,"#2e8b3a"],["Podemos",27,"#7cc242"],["PSB",15,"#f7d417"],["PSOL · Rede",15,"#8e1b58"],["PSDB · Cidadania",11,"#6fb3e8"],["Novo",10,"#f26a1b"],["PRD · Solidariedade",7,"#b5651d"],["PDT",6,"#e2526b"],["Avante",5,"#ff9e40"],["Missão",1,"#8a8a8a"]],
     senado: [["PL",29,"#1b3f94"],["PT",10,"#cc1f2f"],["MDB",8,"#2e8b3a"],["PP",6,"#6fb3e8"],["União",5,"#3a7bd5"],["Republicanos",5,"#0b8f9e"],["PSD",4,"#f2a900"],["PSB",4,"#f7d417"],["Novo",3,"#f26a1b"],["PSDB",2,"#9cc9ee"],["Podemos",2,"#7cc242"],["Rede",1,"#8e1b58"],["PDT",1,"#e2526b"],["Sem partido",1,"#8a8a8a"]],
+    /* promessas do presidente: [título, status, nota curta, {r:[resumo em itens], f:[[fonte,url,AAAA-MM-DD]]}]
+       status: Aprovada · Parcialmente aprovada · Em votação · Atrasada · Não aprovada · Ainda não começou */
     promises: [
-      ["Acabar com a escala 6x1 (jornada de 40h)","Cumprida","Promulgada pelo Congresso em 16/10/2026. A jornada cai para 42h em 60 dias e para 40h um ano depois."],
-      ["Criar o Ministério da Segurança Pública","Em votação","Depende da PEC da Segurança, aprovada na Câmara e na CCJ do Senado. Falta o Plenário do Senado, ainda sem data."],
-      ["Salário mínimo acima da inflação","Ainda não começou","Primeiro reajuste em janeiro de 2027."],
-      ["Isenção de IR até R$ 5 mil","Cumprida","Já está valendo."],
-      ["Retomar concessões de ferrovias","Atrasada","Nenhum edital publicado até jun/2026."]
+      ["Acabar com a escala 6x1 (jornada de 40h)","Parcialmente aprovada","Virou emenda à Constituição em 16/10/2026, mas por etapas e com exceções.",{r:[
+        "<b>Por que \"parcialmente\":</b> a promessa era acabar com a 6x1 e chegar a 40 horas. A mudança já está na Constituição, mas as 40 horas só chegam no fim de 2027 e ainda há exceções e regras a definir.",
+        "<b>O que foi aprovado:</b> fim da escala 6x1, com duas folgas por semana e sem corte de salário (Emenda Constitucional 141/2026). O Senado aprovou por 75 votos a 1.",
+        "<b>Por etapas:</b> em até 60 dias a jornada máxima cai de 44 para 42 horas, já com a escala 5x2. As 40 horas só valem 14 meses depois da publicação.",
+        "<b>Exceções:</b> acordos coletivos ainda podem manter a 6x1 em casos excepcionais, se a média do mês for de duas folgas por semana. Quem tem diploma e ganha a partir de cerca de R$ 21,2 mil pode negociar a jornada direto com o patrão. Terceirizados do governo têm até 12 meses.",
+        "<b>O que ainda falta:</b> uma lei com regras de transição para MEIs e pequenas empresas, e a regulamentação de alguns setores."],
+        f:[["Agência Brasil","https://agenciabrasil.ebc.com.br/politica/noticia/2026-10/congresso-promulga-emenda-do-fim-da-6x1-escala-5x2-comeca-em-60-dias","2026-10-16"],["IEPREV","https://www.ieprev.com.br/blog/fim-da-escala-6x1-o-que-foi-aprovado-quando-comeca-a-valer-e-o-que-muda-na-pratica","2026-10-16"]]}],
+      ["Criar o Ministério da Segurança Pública","Em votação","Depende da PEC da Segurança, que já passou na Câmara e na CCJ do Senado. Falta o Plenário do Senado.",{r:[
+        "<b>Onde está:</b> a Câmara aprovou a PEC da Segurança (PEC 18/2025) em 4/3/2026, e a Comissão de Constituição e Justiça do Senado concluiu a votação em 14/10/2026. Falta o Plenário do Senado, que precisa de pelo menos 49 votos em dois turnos.",
+        "<b>Por que atrasou:</b> em 14/10 a votação foi adiada a pedido do governo, depois que a oposição apresentou uma emenda para reduzir a maioridade penal para 16 anos em crimes hediondos. Até 27/10 não havia nova data.",
+        "<b>O que a PEC faz:</b> cria o Sistema Único de Segurança Pública, para juntar União, estados e cidades contra o crime organizado; endurece regras contra facções e milícias; permite polícias municipais e amplia o papel da Polícia Rodoviária Federal.",
+        "<b>Ligação com a promessa:</b> o presidente condicionou a criação do Ministério da Segurança Pública à aprovação dessa PEC."],
+        f:[["Estado de Minas","https://www.em.com.br/politica/2026/10/7520985-pec-da-seguranca-votacao-no-plenario-do-senado-fica-para-a-proxima-semana.html","2026-10-14"],["Rádio Senado","https://www12.senado.leg.br/radio/1/noticia/2026/10/27/pec-da-seguranca-publica-amplia-o-papel-da-uniao-contra-o-crime-organizado","2026-10-27"],["Jornal Grande Bahia","https://jornalgrandebahia.com.br/2026/10/pec-da-seguranca-chega-ao-plenario-do-senado-presidente-lula-vincula-ministerio-da-seguranca-a-aprovacao-do-texto/","2026-10"]]}],
+      ["Salário mínimo acima da inflação","Ainda não começou","O primeiro reajuste do novo mandato sai em janeiro de 2027.",{r:[
+        "<b>Como vamos conferir:</b> quando o valor de 2027 for publicado, o painel compara o aumento com a inflação oficial do ano (INPC, do IBGE). Se o aumento for maior que a inflação, a promessa conta como cumprida naquele ano.",
+        "<b>Por que ainda não começou:</b> o novo mandato começa em 1º de janeiro de 2027. Os reajustes de 2023 a 2026 são do mandato anterior."],f:[]}],
+      ["Isenção de IR até R$ 5 mil","Aprovada","Lei 15.270/2025, em vigor desde janeiro de 2026.",{r:[
+        "<b>O que foi aprovado:</b> quem ganha até R$ 5 mil por mês não paga Imposto de Renda. Quem ganha até R$ 7.350 paga menos.",
+        "<b>Quando:</b> a lei foi sancionada em 26/11/2025 e vale desde janeiro de 2026. A diferença aparece na declaração de 2027.",
+        "<b>Como se paga:</b> quem ganha mais de R$ 600 mil por ano passa a pagar um imposto mínimo, de até 10%. São cerca de 140 mil pessoas."],
+        f:[["Senior (resumo da lei)","https://documentacao.senior.com.br/exigenciaslegais/noticias/trabalhista-previdenciaria/2025/2025-11-27-trabalhista-lei-15-270-2025-sancionada-lei-que-amplia-isenção-do-imposto-de-renda-para-quem-ganha-ate-5-mil","2025-11-27"]]}],
+      ["Retomar concessões de ferrovias","Atrasada","Nenhum leilão de ferrovia foi feito; os primeiros ficaram para 2027.",{r:[
+        "<b>Onde está:</b> nenhum leilão de ferrovia aconteceu em 2025 e 2026. O governo prevê quatro para 2027: Anel Ferroviário do Sudeste (abril), Malha Oeste (agosto), Ferrogrão (setembro) e Corredor Leste-Oeste (outubro).",
+        "<b>Por que \"atrasada\":</b> o edital da Malha Oeste estava previsto para o fim de 2026 e passou para abril de 2027. Ele ainda depende de aval do Tribunal de Contas da União.",
+        "<b>Enquanto isso:</b> a concessão antiga da Malha Oeste acabou em 30/6/2026, e a ferrovia está sob um contrato de emergência só para vigilância e limpeza."],
+        f:[["A Crítica (Campo Grande)","https://acritica.net/economia/malha-oeste-leilao-agosto-2027-aporte-uniao-trecho-ms/","2026-10-16"]]}]
     ]
   },
   /* uf: [nome, região, capital, governador atual, eleito 2027, partido eleito, turno, % válidos,
@@ -738,8 +770,8 @@ function estadosView(){
 
 /* ============ PEÇAS ============ */
 function tag(kind, text){
-  const sym = kind==="good" ? "▲" : kind==="bad" ? "▼" : kind==="same" ? "=" : "?";
-  const cls = kind==="bad" ? "bad" : kind==="na" ? "na" : kind==="good" ? "good" : "";
+  const sym = kind==="good" ? "▲" : kind==="part" ? "◐" : kind==="bad" ? "▼" : kind==="same" ? "=" : "?";
+  const cls = kind==="bad" ? "bad" : kind==="na" ? "na" : kind==="good" ? "good" : kind==="part" ? "part" : "";
   return `<span class="tag ${cls}"><span aria-hidden="true">${sym}</span>${text}</span>`;
 }
 function compare(rows, max){
@@ -862,14 +894,15 @@ function perfilUrl(key){
 }
 
 /* ============ PROMESSAS POR POLÍTICO ============ */
-function promTag(st){ return tag(st==="Cumprida"?"good":(st==="Atrasada"||st==="Não cumprida")?"bad":(st==="Em andamento"||st==="Em votação")?"same":"na", st); }
+const stKind = st => (st==="Cumprida"||st==="Aprovada") ? "good" : st==="Parcialmente aprovada" ? "part" : (st==="Atrasada"||st==="Não cumprida"||st==="Não aprovada") ? "bad" : (st==="Em andamento"||st==="Em votação") ? "same" : "na";
+function promTag(st){ return tag(stKind(st), st); }
 function promHTML(key, open){
   const P = (DATA.promessas||{})[key];
   if (!P) {
     const leg = key[0]==="d" || key[0]==="s";
     return `<div class="histbox"><b class="eyebrow">Promessas</b><p class="muted" style="font-size:.9rem">${leg ? "Deputados e senadores não entregam plano de governo ao TSE. Estamos reunindo o que cada um prometeu na campanha, e as promessas entram aqui aos poucos." : "As promessas deste político ainda não foram registradas no painel. Elas entram nas próximas atualizações."}</p></div>`;
   }
-  const n = P.i.length, cumpr = P.i.filter(x=>x[1]==="Cumprida").length;
+  const n = P.i.length, cumpr = P.i.filter(x=>x[1]==="Cumprida"||x[1]==="Aprovada").length;
   return `<div class="histbox"><b class="eyebrow">Promessas · ${cumpr} de ${n} cumpridas</b>
     <div class="prom">${P.i.map(([t,st,nota])=>`<div class="pr"><b>${t}</b>${promTag(st)}${nota?`<p>${nota}</p>`:""}</div>`).join("")}</div>
     <p class="src">Fonte das promessas: <a href="${P.f[1]}" target="_blank" rel="noopener">${P.f[0]}</a> (${P.f[2].split("-").reverse().join("/")}). O andamento é revisto nas atualizações diárias.</p></div>`;
@@ -1940,14 +1973,17 @@ function carouselHTML(){
 function promCarHTML(){
   const f = followed(), P = B.promises, n = P.length;
   const cnt = st => P.filter(x=>x[1]===st).length;
-  const kind = st => st==="Cumprida"?"good":st==="Atrasada"?"bad":st==="Em votação"?"same":"x";
+  const kind = st => { const k = stKind(st); return k==="na" ? "x" : k; };
+  const ORD = ["Aprovada","Parcialmente aprovada","Em votação","Atrasada","Não aprovada","Ainda não começou"];
+  const PL = {"Aprovada":["aprovada","aprovadas"],"Parcialmente aprovada":["parcialmente aprovada","parcialmente aprovadas"],"Em votação":["em votação","em votação"],"Atrasada":["atrasada","atrasadas"],"Não aprovada":["não aprovada","não aprovadas"],"Ainda não começou":["ainda não começou","ainda não começaram"]};
   return `<section class="carousel" aria-roledescription="carrossel" aria-labelledby="pc-t">
     <div class="car-head"><div><h2 id="pc-t" style="font-size:1.3rem">O presidente está cumprindo o que prometeu?</h2>
-      <p class="muted" style="font-size:.88rem">${[[cnt("Cumprida"),"cumprida","cumpridas"],[cnt("Em votação"),"em votação","em votação"],[cnt("Atrasada"),"atrasada","atrasadas"],[n-cnt("Cumprida")-cnt("Em votação")-cnt("Atrasada"),"ainda não começou","ainda não começaram"]].filter(x=>x[0]).map(([v,a,b])=>`${v} ${v===1?a:b}`).join(" · ")}. Toque em "Me avise" e o site mostra um aviso se algo mudar.</p></div>
+      <p class="muted" style="font-size:.88rem">${ORD.map(st=>[cnt(st),st]).filter(x=>x[0]).map(([v,st])=>`${v} ${PL[st][v===1?0:1]}`).join(" · ")}. Toque em "Me avise" e o site mostra um aviso se algo mudar.</p></div>
       <span class="muted" style="font-size:.85rem">Arraste para o lado ›</span></div>
-    <div class="car-track" id="pc" tabindex="0">${P.map(([t,st,nota],i)=>`<article class="box ind k-${kind(st)}" aria-roledescription="slide" aria-label="${i+1} de ${n}">
-      <div class="head"><h3>${t}</h3></div>${tag(st==="Cumprida"?"good":st==="Atrasada"?"bad":st==="Em votação"?"same":"na",st)}
+    <div class="car-track" id="pc" tabindex="0">${P.map(([t,st,nota,ler],i)=>`<article class="box ind k-${kind(st)}" aria-roledescription="slide" aria-label="${i+1} de ${n}">
+      <div class="head"><h3>${t}</h3></div>${promTag(st)}
       <p class="plain">${nota}</p>
+      ${ler ? `<details class="lermais"><summary><span class="ab">Ler mais: o que aconteceu ›</span><span class="fe">Fechar ˄</span></summary><ul>${ler.r.map(x=>`<li>${x}</li>`).join("")}</ul>${ler.f.length?`<p class="src" style="margin-top:8px">Fontes: ${ler.f.map(([nm,u,d])=>`<a href="${u}" target="_blank" rel="noopener">${nm}</a> (${d.split("-").reverse().join("/")})`).join(" · ")}</p>`:""}</details>` : ""}
       <div><button type="button" class="follow" data-follow="${t}" aria-pressed="${t in f}">${t in f?"✓ Aviso ligado":"Me avise na próxima visita"}</button></div>
     </article>`).join("")}</div>
     <div class="car-nav"><button type="button" class="btn car-arrow" id="pc-prev" aria-label="Promessa anterior">‹</button><div class="car-dots" id="pc-dots">${P.map((_,i)=>`<button type="button" data-i="${i}" aria-label="Ir para a promessa ${i+1}"></button>`).join("")}</div><button type="button" class="btn car-arrow" id="pc-next" aria-label="Próxima promessa">›</button></div>
