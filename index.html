@@ -246,6 +246,7 @@ tbody tr:hover{background:var(--wash)}
 .feed ul{margin:0;padding:0}
 .inst{width:max-content;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--fg);border-radius:6px;padding:2px 7px;height:max-content;white-space:nowrap}
 .feed .txt{font-size:.98rem}
+.feed li:has(details.deep) .txt{cursor:pointer}
 .feed .meta{font-size:.78rem;color:var(--faint)}
 .feed .new{font-weight:700;color:var(--bad);margin-right:4px}
 
@@ -1525,6 +1526,7 @@ function renderFeed(){
 }
 function wireFeed(){
   document.querySelector('[aria-labelledby="pa-t"] .chips').addEventListener("click", e=>{ const b=e.target.closest("[data-fd]"); if(!b) return; feedFilter=b.dataset.fd; renderFeed(); $("fd-"+feedFilter).focus(); });
+  $("feed").addEventListener("click", e=>{ const t = e.target.closest(".txt"); if (!t) return; const d = t.closest("li").querySelector("details.deep"); if (d) d.open = !d.open; });
   renderFeed();
 }
 
