@@ -167,6 +167,41 @@ tbody tr:hover{background:var(--wash)}
 .geo .br path{stroke:#111;stroke-width:2.2}
 .mapnote{font-size:.78rem;color:var(--faint)}
 .wrank{display:grid;gap:6px;font-size:.92rem}
+
+/* carrossel */
+.carousel{display:grid;gap:10px}
+.car-head{display:flex;justify-content:space-between;align-items:end;gap:8px;flex-wrap:wrap}
+.car-track{display:grid;grid-auto-flow:column;grid-auto-columns:min(86%,330px);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:2px 2px 8px;overscroll-behavior-x:contain}
+.car-track::-webkit-scrollbar{display:none}
+.car-track>*{scroll-snap-align:start}
+.car-track .box{border-top:6px solid var(--fg)}
+.car-track .box.k-good{border-top-color:var(--good)}
+.car-track .box.k-bad{border-top-color:var(--bad)}
+.car-track .box.k-same{border-top-color:var(--g3)}
+.car-nav{display:flex;align-items:center;justify-content:center;gap:10px}
+.car-dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.car-dots button{width:12px;height:12px;min-height:0;padding:0;border-radius:50%;border:1.5px solid var(--fg);background:var(--bg);cursor:pointer}
+.car-dots button[aria-current="true"]{background:var(--fg)}
+.car-arrow{width:44px;padding:0;font-size:1.2rem}
+/* boletim */
+.bol{display:grid;gap:12px}
+.bol-rows{display:grid;gap:6px}
+.bol-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--rule)}
+.bol-row:last-child{border-bottom:0}
+.bol-row .v{font-family:var(--f-mono);font-size:.9rem}
+.bol select{font:inherit;padding:8px;border-radius:10px;border:1px solid var(--g3);background:var(--bg);color:var(--fg);min-height:44px}
+/* relações */
+.rel{display:grid;gap:10px}
+.rel details{border:1px solid var(--rule);border-left:6px solid var(--g3);border-radius:12px;padding:12px 14px}
+.rel details.k-good{border-left-color:var(--good)}
+.rel details.k-bad{border-left-color:var(--bad)}
+.rel summary{cursor:pointer;display:grid;gap:6px;list-style:none}
+.rel summary::-webkit-details-marker{display:none}
+.rel .rt{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+.rel .rt b{font-size:1.1rem}
+.rel ul{margin:10px 0 0 18px;display:grid;gap:6px}
+.rel .more{font-size:.85rem;color:var(--muted)}
+details[open] .more{display:none}
 .wr{display:grid;grid-template-columns:1.8rem 8.5rem 1fr 4.6rem;gap:8px;align-items:center;padding:3px 4px;border-radius:6px}
 .wr.me{background:var(--wash);font-weight:700;outline:1.5px solid var(--fg)}
 .wr .n{font-family:var(--f-mono);font-size:.78rem;color:var(--faint)}
@@ -521,6 +556,34 @@ const DATA = {
   /* deputados federais por estado (lei atual, 513 no total) */
   vagasCamara: {SP:70,MG:53,RJ:46,BA:39,RS:31,PR:30,PE:25,CE:22,MA:18,GO:17,PA:17,SC:16,PB:12,ES:10,PI:10,AL:9,AC:8,AM:8,AP:8,DF:8,MS:8,MT:8,RN:8,RO:8,RR:8,SE:8,TO:8},
   /* mundo: ISO2 → [nome, PIB per capita PPC 2026 (FMI, dólar internacional), homicídios por 100 mil (UNODC), ano, IDH 2023 (PNUD, relatório 2025)] */
+  relacoesAtualizado: "2026-10-27",
+  /* relações: [ISO2, país, situação, tipo good|bad|same, resumo, [fatos], [[fonte, url, data]]] */
+  relacoes: [
+    ["US","Estados Unidos","Tarifas em vigor","bad","Parte dos produtos brasileiros paga até 37,5% a mais para entrar nos EUA desde julho de 2026. Lula diz esperar um acordo.",
+      ["Em 22/7/2026 começou uma sobretaxa de 25% sobre produtos brasileiros; em 24/7 veio mais 12,5%, ligada a uma investigação sobre trabalho forçado.","O governo brasileiro contestou, recorreu à OMC (Organização Mundial do Comércio) e estuda responder com a Lei da Reciprocidade.","Em 15/10, Lula disse esperar um acordo e afirmou que o comércio com os EUA caiu 9%.","Até 26/10, Donald Trump não havia comentado a reeleição de Lula."],
+      [["Exame","https://exame.com/brasil/tarifaco-dos-eua-como-lula-e-flavio-bolsonaro-se-posicionam-sobre-trump-no-2o-turno/","2026-10-25"],["O Povo","https://www.opovo.com.br/noticias/politica/2026/10/26/trump-e-milei-nao-se-manifestam-sobre-a-vitoria-de-lula.html","2026-10-26"]]],
+    ["CN","China","Maior parceira comercial","good","O comércio com a China bateu recorde em 2026: US$ 143 bilhões de janeiro a setembro.",
+      ["O Brasil vendeu US$ 84,7 bilhões à China (alta de 12%) e comprou US$ 58,6 bilhões (alta de 9,9%).","A China comprou 70% da soja e metade do petróleo que o Brasil exportou.","A carne bovina atingiu a cota chinesa: o que passa dela paga sobretaxa de 55%.","As compras de carros elétricos chineses subiram 341%."],
+      [["Agrolink","https://www.agrolink.com.br/noticias/comercio-entre-brasil-e-china-bate-recorde-em-2026_519862.html","2026-10-16"]]],
+    ["EU","União Europeia","Acordo em vigor","good","O acordo Mercosul–União Europeia vale de forma provisória desde 1º de maio de 2026, depois de 25 anos de negociação.",
+      ["Segundo a CNI, mais de 80% das exportações brasileiras para a Europa ficaram sem tarifa já na primeira fase.","França, Polônia, Irlanda e Áustria se opuseram, com medo da concorrência na agricultura.","O Tribunal de Justiça da União Europeia ainda analisa o texto, o que pode atrasar a entrada em vigor definitiva."],
+      [["Times Brasil","https://timesbrasil.com.br/empresas-e-negocios/acordo-mercosul-ue-zera-tarifas-de-mais-de-5-mil-produtos-brasileiros-na-europa-aponta-cni/","2026-04-29"],["Agência Brasil","https://agenciabrasil.ebc.com.br/economia/noticia/2026-03/acordo-mercosul-ue-valera-provisoriamente-em-maio-confirma-governo","2026-03-24"]]],
+    ["AR","Argentina","Relação rebaixada","bad","O Brasil está sem embaixador em Buenos Aires desde agosto de 2026, depois de ofensas de Javier Milei a Lula.",
+      ["Na convenção do PL que lançou Flávio Bolsonaro, Milei chamou Lula de \"ex-presidiário\" e ofendeu o ministro Alexandre de Moraes.","O Brasil chamou o embaixador de volta e deixou só um encarregado de negócios na Argentina, algo inédito na história recente.","Milei apoiou Flávio Bolsonaro e, até 26/10, não havia comentado o resultado da eleição."],
+      [["SBT News","https://sbtnews.sbt.com.br/noticia/politica/brasil-rebaixa-relacao-com-argentina-apos-ataques-de-milei","2026-08-04"],["O Povo","https://www.opovo.com.br/noticias/politica/2026/10/26/trump-e-milei-nao-se-manifestam-sobre-a-vitoria-de-lula.html","2026-10-26"]]],
+    ["VE","Venezuela","Contato limitado","same","Desde janeiro de 2026, Delcy Rodríguez governa a Venezuela de forma interina, depois que os EUA capturaram Nicolás Maduro.",
+      ["Lula criticou a ação militar dos EUA e a chamou de \"muito grave\".","O Brasil mandou um diplomata de comércio a Caracas em abril e conversou com Rodríguez por telefone em julho.","A Venezuela deve cerca de US$ 1,8 bilhão ao Brasil e está suspensa do Mercosul desde 2017.","O governo venezuelano parabenizou Lula pela reeleição."],
+      [["The Rio Times","https://www.riotimesonline.com/lula-win-venezuela-brazil-relations-explained-2026/","2026-10-26"]]],
+    ["PY","Paraguai","Parceria, com Itaipu em discussão","same","O presidente Santiago Peña foi um dos primeiros a parabenizar Lula. O preço da energia de Itaipu é o tema mais delicado entre os dois países.",
+      ["O tratado de Itaipu previa rever, a partir de agosto de 2023, as regras financeiras da usina (o \"Anexo C\").","O Paraguai diz que vende sua sobra de energia ao Brasil por um preço abaixo do de mercado.","Também parabenizaram Lula logo na noite da eleição os presidentes da Bolívia e do Panamá."],
+      [["O Povo","https://www.opovo.com.br/noticias/politica/2026/10/26/trump-e-milei-nao-se-manifestam-sobre-a-vitoria-de-lula.html","2026-10-26"],["Última Hora","https://www.ultimahora.com/lula-y-pena-se-reunen-en-brasilia-para-hablar-de-un-nuevo-acuerdo-sobre-itaipu","2024-01-15"]]],
+    ["IL","Israel","Relação rebaixada","bad","Os dois países estão sem embaixadores desde 2025, por causa das críticas de Lula à guerra em Gaza.",
+      ["Em 2024, Lula comparou as mortes de civis palestinos ao Holocausto e foi declarado persona non grata (pessoa indesejada) por Israel.","O Brasil chamou seu embaixador de volta e não mandou outro.","Em agosto de 2025, Israel desistiu de indicar um embaixador, e os dois governos passaram a tratar a relação em nível mais baixo."],
+      [["Diario de Pernambuco","https://www.diariodepernambuco.com.br/mundo/2025/08/11694142-israel-desiste-de-indicar-embaixador-e-rebaixa-relacoes-diplomaticas-com-brasil.html","2025-08-25"]]],
+    ["IN","Índia e BRICS","Parceria no BRICS","same","A Índia preside o BRICS (grupo com Brasil, Rússia, China, África do Sul e outros) em 2026.",
+      ["A cúpula do BRICS foi em Nova Délhi, em 12 e 13 de setembro de 2026, com Putin e Xi Jinping.","Lula não foi por causa da campanha eleitoral; o chanceler Mauro Vieira representou o Brasil.","Lula preferiu discursar na abertura da Assembleia Geral da ONU, em Nova York, em 22 de setembro."],
+      [["Metrópoles","https://metropoles.com/mundo/lula-desfalca-cupula-dos-brics-com-putin-e-xi-jinping-na-india","2026-09"]]]
+  ],
   mundo: {
     BR:["Brasil",24428,18.7,2024,0.786], AR:["Argentina",33187,3.9,2024,0.865], CL:["Chile",37336,6.1,2024,0.878],
     CO:["Colômbia",23576,24.4,2024,0.788], MX:["México",26643,25.6,2024,0.789], PE:["Peru",20116,8.6,2021,0.794],
@@ -605,8 +668,9 @@ function estadosView(){
   return `
   <h2 style="font-size:clamp(1.8rem,6vw,2.6rem)">Estados</h2>
   <p class="lede">Toque no seu estado, no mapa ou na lista, ou procure a sua cidade.</p>
-  ${myUFHTML()}
+  ${boletimHTML()}
   ${citySearchHTML("")}
+  ${rankingHTML()}
   ${mapHTML()}
   <section class="box" style="display:grid;gap:10px" aria-labelledby="lista-t">
     <h2 id="lista-t" style="font-size:1.3rem">Lista de estados</h2>
@@ -1339,17 +1403,20 @@ function worldRank(){
 function worldView(){
   return `
     <h2 style="font-size:clamp(1.8rem,6vw,2.6rem)">Brasil no mundo</h2>
-  <p class="lede">Como o Brasil se compara com ${Object.keys(DATA.mundo).length-1} países da América Latina, do G20 e da Europa.</p>
+  <p class="lede">Como o Brasil se relaciona e se compara com outros países.</p>
+  ${relacoesHTML()}
+  <h2 style="font-size:1.35rem">Comparação com ${Object.keys(DATA.mundo).length-1} países</h2>
   <section class="box" style="display:grid;gap:16px">
     <div class="chips" role="group" aria-label="Escolher tema">${Object.entries(WMET).map(([k,m])=>`<button type="button" class="btn" id="w-${k}" data-w="${k}" aria-pressed="${wmetric===k}">${m.label}</button>`).join("")}</div>
     <div id="w-summary"></div>
     <div id="worldmap"></div>
     <div class="legend"><span>Melhor</span><span class="sw">${["--s1","--s2","--s3","--s4","--s5"].map(g=>`<i style="background:var(${g})"></i>`).join("")}</span><span>Pior</span><span style="margin-left:8px">Cinza claro: fora da comparação</span></div>
     <p class="ex muted" id="w-ex"></p>
-    <h3>Ranking</h3>
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center"><h3>Ranking</h3><button type="button" class="btn" id="w-dir" aria-pressed="true">Do pior para o melhor</button></div>
     <div class="wrank" id="wrank"></div>
   </section>`;
 }
+let wWorst = true;
 function renderWorld(){
   const m = WMET[wmetric], list = worldRank(), n = list.length;
   const shade = {}; list.forEach(([k],i)=> shade[k] = ["--s1","--s2","--s3","--s4","--s5"][Math.min(4, Math.floor(i/n*5))]);
@@ -1358,8 +1425,10 @@ function renderWorld(){
   $("w-summary").innerHTML = `<div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap"><span class="big">${pos}º</span><span class="plain">lugar do Brasil entre ${n} países em <b>${m.label.toLowerCase()}</b> (${m.fmt(br[m.i])}).</span></div>`;
   $("w-ex").textContent = m.ex;
   const max = Math.max(...list.map(([,a])=>a[m.i]));
-  $("wrank").innerHTML = list.map(([k,a],i)=>`<div class="wr ${k==="BR"?"me":""}"><span class="n">${i+1}º</span><span>${a[0]}</span><span class="t"><b style="width:${a[m.i]/max*100}%;background:var(${shade[k]})"></b></span><span class="v">${m.fmt(a[m.i])}</span></div>`).join("");
+  const shown = list.map((e,i)=>[e,i]); if (wWorst) shown.reverse();
+  $("wrank").innerHTML = shown.map(([[k,a],i])=>`<div class="wr ${k==="BR"?"me":""}"><span class="n">${i+1}º</span><span>${a[0]}</span><span class="t"><b style="width:${a[m.i]/max*100}%;background:var(${shade[k]})"></b></span><span class="v">${m.fmt(a[m.i])}</span></div>`).join("");
   Object.keys(WMET).forEach(k=>$("w-"+k).setAttribute("aria-pressed", k===wmetric));
+  $("w-dir").setAttribute("aria-pressed", wWorst); $("w-dir").textContent = wWorst ? "Do pior para o melhor" : "Do melhor para o pior";
   const host = $("worldmap");
   if (MAPS.world && MAPS.world.paths){
     const entries = Object.entries(MAPS.world.paths).map(([id,o])=>[id.toUpperCase().slice(0,2), o && o.path]).filter(([,d])=>d);
@@ -1370,6 +1439,7 @@ function renderWorld(){
   }
 }
 function wireWorld(){
+  $("w-dir").onclick = ()=>{ wWorst = !wWorst; renderWorld(); };
   document.querySelector("#view .chips").addEventListener("click", e=>{ const b=e.target.closest("[data-w]"); if(!b) return; wmetric=b.dataset.w; renderWorld(); $("w-"+wmetric).focus(); });
 }
 
@@ -1652,7 +1722,8 @@ function brasilView(){
   return `
   <div class="crumb"><b>Brasil</b> · país todo</div>
   ${alertHTML()}
-  ${myUFHTML()}
+  ${carouselHTML()}
+  ${boletimHTML()}
   ${meusPolHTML()}
   <div class="box" style="display:grid;gap:12px">
     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
@@ -1674,26 +1745,6 @@ function brasilView(){
     <p class="muted" style="font-size:.9rem;margin-bottom:6px">Toque em "Me avise na próxima visita": se a situação mudar, o site mostra um aviso quando você abrir de novo neste celular.</p>
     <div class="prom">${(()=>{ const f = followed(); return B.promises.map(([t,st,n])=>`<div class="pr"><b>${t}</b>${tag(st==="Cumprida"?"good":st==="Atrasada"?"bad":st==="Em votação"?"same":"na",st)}<p>${n}</p><div style="grid-column:1/-1"><button type="button" class="follow" data-follow="${t}" aria-pressed="${t in f}">${t in f?"✓ Aviso ligado":"Me avise na próxima visita"}</button></div></div>`).join(""); })()}</div>
   </article>
-  <div class="inds">
-    <article class="box ind"><div class="head"><h3>Emprego</h3>${tag("good","Melhorou")}</div><div class="big">${f1(B.desemp[0])}<small>% sem emprego</small></div><p class="plain">Era ${f1(B.desemp[1])}% um ano antes. É o menor nível desde 2012.</p><p class="src">IBGE · abr–jun 2026</p></article>
-    <article class="box ind"><div class="head"><h3>Preços</h3>${tag("bad","Acima do limite")}</div><div class="big">${f2(B.ipca)}<small>% em 12 meses</small></div><p class="plain">O que custava R$ 100 passou a custar cerca de R$ ${f2(100+B.ipca)}. O limite da meta é 4,5%.</p><p class="src">IBGE · até set/2026</p></article>
-    <article class="box ind"><div class="head"><h3>Segurança</h3>${tag("good","Melhorou em 2025")}</div><div class="big">${f1(B.mvi)}<small>mortes por 100 mil</small></div><p class="plain">As mortes violentas caíram ${f1(-B.mviVar)}% em 2025, o menor nível em 14 anos.</p><p class="src">Anuário de Segurança Pública 2026</p></article>
-    <article class="box ind"><div class="head"><h3>Educação</h3>${tag("good","Melhorou")}</div><div class="big">${f1(B.idebAI)}<small>de 10 no Ideb</small></div><p class="plain">Primeiros anos do fundamental. Era ${f1(B.idebAI23)} em 2023. Ensino médio: ${f1(B.idebEM)} (era ${f1(B.idebEM23)}).</p><p class="src">Inep/MEC · Ideb 2025</p></article>
-    <article class="box ind"><div class="head"><h3>Dívida do governo</h3>${tag("bad","Piorou")}</div><div class="big">${f1(B.divida)}<small>% do PIB</small></div><p class="plain">Para cada R$ 100 que o país produz em um ano, o governo deve cerca de R$ ${Math.round(B.divida)}. Maior nível desde 2021.</p><p class="src">Banco Central · ago/2026</p></article>
-    <article class="box ind"><div class="head"><h3>Juros (Selic)</h3>${tag("same","Caindo devagar")}</div><div class="big">${f2(B.selic)}<small>% ao ano</small></div><p class="plain">Juros altos deixam empréstimos e compras parceladas mais caros. A taxa está caindo desde março.</p><p class="src">Banco Central · out/2026</p></article>
-  </div>
-  <div class="people">
-    <article class="box person">
-      <span class="role">Presidente eleito para 2027–2030</span>
-      <span class="name">Lula <span style="font-weight:500">(PT)</span></span>
-      <p>Reeleito no 2º turno com <b class="mono">51,79%</b> contra Flávio Bolsonaro (PL), com 48,21%. Vice: Geraldo Alckmin (PSB).</p>
-    </article>
-    <article class="box person">
-      <span class="role">O que o povo acha do governo</span>
-      <span class="name">${B.aprova}% aprovam · ${B.desaprova}% desaprovam</span>
-      <p>Quaest, set/2026. A diferença está dentro da margem de erro: o país está dividido.</p>
-    </article>
-  </div>
   ${feedHTML()}
   ${candidatosHTML()}
   ${mapHTML()}
@@ -1704,13 +1755,131 @@ function brasilView(){
     <a class="box card-link" href="#aprender"><span class="eyebrow">Aprender</span><h3 style="font-family:var(--f-display);font-size:1.3rem">Como funciona o governo, com teste no final</h3><span class="go">Começar ›</span></a>
   </div>
   <article class="box" style="display:grid;gap:10px">
-    <h3>Todos os estados</h3>
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline"><h3>Todos os estados</h3><a href="#estados" data-goto="rk-t"><b>Ranking do pior para o melhor ›</b></a></div>
     <p class="muted" style="font-size:.92rem">Toque num estado para ver os detalhes. ▲ melhorou · ▼ piorou em relação ao ano anterior.</p>
     <div class="tbl"><table>
       <thead><tr><th>Estado</th><th>Governador eleito</th><th class="n">Desemprego</th><th class="n">Ideb</th><th class="n">Mortes/100 mil</th></tr></thead>
       <tbody id="uf-table">${rows}</tbody>
     </table></div>
   </article>`;
+}
+
+
+/* ============ BOLETIM DO SEU ESTADO ============ */
+const RK = {
+  d26:{label:"Desemprego", better:"low", fmt:v=>f1(v)+"%", ex:"Pessoas procurando emprego, em % de quem trabalha ou quer trabalhar (IBGE)."},
+  renda:{label:"Renda média", better:"high", fmt:v=>brl(v), ex:"Renda média por pessoa da casa, por mês (IBGE)."},
+  ai:{label:"Ideb (1º ao 5º ano)", better:"high", fmt:v=>f1(v), ex:"Nota da escola pública e privada nos primeiros anos, de 0 a 10 (Inep)."},
+  em:{label:"Ideb (ensino médio)", better:"high", fmt:v=>f1(v), ex:"Nota do ensino médio, de 0 a 10 (Inep)."},
+  mvi:{label:"Mortes violentas", better:"low", fmt:v=>f1(v), ex:"Mortes violentas por 100 mil habitantes (Anuário de Segurança Pública)."}
+};
+function rkTag(r){ const n = UF_KEYS.length; return tag(r<=9?"good":r>=n-8?"bad":"same", `${ord(r)} de ${n}`); }
+function boletimHTML(){
+  const k = myUF();
+  const opts = `<option value="">Escolha seu estado</option>` + UF_KEYS.slice().sort((a,b)=>U(a).nome.localeCompare(U(b).nome)).map(x=>`<option value="${x}" ${x===k?"selected":""}>${U(x).nome}</option>`).join("");
+  if (!k) return `<section class="box bol" aria-labelledby="bol-t">
+    <div><span class="eyebrow">Boletim do seu estado</span><h2 id="bol-t" style="font-size:1.3rem">Como está o seu estado?</h2></div>
+    <label for="bol-uf" class="muted" style="display:grid;gap:6px;font-size:.92rem">Escolha o estado e veja a posição dele em cada tema e quem governa.<select id="bol-uf">${opts}</select></label>
+  </section>`;
+  const x = U(k);
+  const mc = DATA.cidades.find(c=>String(c[0])===store.get("minhaCidade") && c[2]===k);
+  const cap = DATA.capitais[k];
+  const nd = DATA.raiox.dep.filter(r=>r[2]===k).length, ns = DATA.raiox.sen.filter(r=>r[2]===k).length;
+  const rows = Object.entries(RK).filter(([f])=>x[f]!==null && x[f]!==undefined).map(([f,m])=>`<div class="bol-row"><span>${m.label}</span><span class="v">${m.fmt(x[f])}</span>${rkTag(rankOf(k,f,m.better==="high"))}</div>`).join("");
+  const dd = x.d26 - x.d25;
+  const prefeito = mc ? ((x.cap===mc[1] && cap) ? cap[0]+(cap[1]?` (${cap[1]})`:"") : (mc[6] ? mc[6]+(mc[7]?` (${mc[7]})`:"") : "sem registro")) : null;
+  return `<section class="box bol myuf" aria-labelledby="bol-t">
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:end">
+      <div><span class="eyebrow">Boletim do seu estado</span><h2 id="bol-t" style="font-size:1.4rem">${x.nome}</h2></div>
+      <a class="go" href="#${k.toLowerCase()}">Ver tudo ›</a>
+    </div>
+    <p class="plain">Desemprego ${dd<0?"<b>caiu</b>":dd>0?"<b>subiu</b>":"ficou igual"}: de ${f1(x.d25)}% para ${f1(x.d26)}% em um ano.</p>
+    <div class="bol-rows">${rows}</div>
+    <p class="src" style="margin-top:-4px">Posição entre os ${UF_KEYS.length} estados: 1º é o melhor.</p>
+    <div style="display:grid;gap:4px">
+      <span class="plain">Governador(a) 2027–2030: <b>${x.gov}</b> (${x.part})</span>
+      ${mc ? `<span class="plain">Prefeito(a) de <a href="#m${mc[0]}">${mc[1]}</a>: <b>${prefeito}</b> · até 2028</span>` : cap ? `<span class="plain">Prefeito(a) de ${x.cap}: <b>${cap[0]}${cap[1]?` (${cap[1]})`:""}</b> · até 2028</span>` : ""}
+      <span class="plain">${nd} deputados federais e ${ns} senadores · <a href="#congresso" data-rxuf="${k}">ver como votam ›</a></span>
+    </div>
+    <label for="bol-uf" class="muted" style="display:grid;gap:6px;font-size:.88rem">Trocar estado<select id="bol-uf">${opts}</select></label>
+  </section>`;
+}
+document.addEventListener("change", e=>{ if (e.target && e.target.id==="bol-uf" && e.target.value){ store.set("meuUF", e.target.value); store.set("minhaCidade",""); route(); setTimeout(()=>{ const b=$("bol-t"); if(b) b.scrollIntoView({block:"start"}); }, 30); } });
+document.addEventListener("click", e=>{ const g = e.target.closest && e.target.closest("[data-goto]"); if (g) window._goto = g.dataset.goto; });
+document.addEventListener("click", e=>{ const a = e.target.closest && e.target.closest("[data-rxuf]"); if (a){ rx.uf = a.dataset.rxuf; rx.casa="dep"; rx.q=""; rx.shown=30; } });
+
+/* ============ RANKING DOS ESTADOS (do pior para o melhor) ============ */
+let rkField = "d26";
+function rankingHTML(){
+  return `<section class="box" style="display:grid;gap:12px" aria-labelledby="rk-t">
+    <div><span class="eyebrow">Ranking</span><h2 id="rk-t" style="font-size:1.35rem">Estados do pior para o melhor</h2></div>
+    <div class="chips" id="rk-chips" role="group" aria-label="Escolher tema">${Object.entries(RK).map(([f,m])=>`<button type="button" class="btn" data-rk="${f}" aria-pressed="${f===rkField}">${m.label}</button>`).join("")}</div>
+    <p class="muted" id="rk-ex" style="font-size:.9rem"></p>
+    <div class="wrank" id="rk-list"></div>
+  </section>`;
+}
+function renderRank(){
+  const m = RK[rkField], hi = m.better==="high";
+  const list = UF_KEYS.filter(k=>U(k)[rkField]!==null).sort((a,b)=> hi ? U(a)[rkField]-U(b)[rkField] : U(b)[rkField]-U(a)[rkField]);
+  const n = list.length, max = Math.max(...list.map(k=>U(k)[rkField])), me = myUF();
+  const sh = ["--s5","--s4","--s3","--s2","--s1"];
+  $("rk-ex").textContent = m.ex + " No topo, o pior; embaixo, o melhor.";
+  $("rk-list").innerHTML = list.map((k,i)=>`<a class="wr ${k===me?"me":""}" href="#${k.toLowerCase()}" style="color:inherit;text-decoration:none"><span class="n">${n-i}º</span><span>${U(k).nome}</span><span class="t"><b style="width:${U(k)[rkField]/max*100}%;background:var(${sh[Math.min(4,Math.floor(i/n*5))]})"></b></span><span class="v">${m.fmt(U(k)[rkField])}</span></a>`).join("");
+  document.querySelectorAll("#rk-chips [data-rk]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.rk===rkField));
+}
+function wireRank(){ if (!$("rk-list")) return; renderRank(); $("rk-chips").addEventListener("click", e=>{ const b=e.target.closest("[data-rk]"); if(!b) return; rkField=b.dataset.rk; renderRank(); }); }
+
+/* ============ RELAÇÕES COM OUTROS PAÍSES ============ */
+function relacoesHTML(){
+  const R = DATA.relacoes || [];
+  const nb = R.filter(r=>r[3]==="bad").length, ng = R.filter(r=>r[3]==="good").length;
+  return `<section class="box rel" aria-labelledby="rel-t">
+    <div><span class="eyebrow">Atualizado todo dia · ${fdate(DATA.relacoesAtualizado)}</span><h2 id="rel-t" style="font-size:1.35rem">Relações do Brasil com outros países</h2></div>
+    <p class="muted" style="font-size:.92rem">${ng} em boa fase, ${nb} com tensão. Toque num país para ver os fatos e as fontes. Verde: acordo ou parceria em alta · Vermelho: tensão ou relação rebaixada · Cinza: contato normal ou limitado.</p>
+    ${R.map(([iso,nome,sit,k,res,fatos,fontes])=>`<details class="k-${k}"><summary><span class="rt"><b>${nome}</b>${tag(k,sit)}</span><span class="plain">${res}</span><span class="more">Ver detalhes ›</span></summary>
+      <ul>${fatos.map(t=>`<li>${t}</li>`).join("")}</ul>
+      <p class="src" style="margin-top:8px">Fontes: ${fontes.map(([n,u,d])=>`<a href="${u}" target="_blank" rel="noopener">${n}</a> (${d.split("-").reverse().join("/")})`).join(" · ")}</p></details>`).join("")}
+  </section>`;
+}
+
+/* ============ CARROSSEL ============ */
+let carTimer = null;
+function carouselHTML(){
+  const R = DATA.relacoes || [];
+  const slides = [
+    ["good",`<div class="head"><h3>Emprego</h3>${tag("good","Melhorou")}</div><div class="big">${f1(B.desemp[0])}<small>% sem emprego</small></div><p class="plain">Era ${f1(B.desemp[1])}% um ano antes. É o menor nível desde 2012.</p><p class="src">IBGE · abr–jun 2026</p>`],
+    ["bad",`<div class="head"><h3>Preços</h3>${tag("bad","Acima do limite")}</div><div class="big">${f2(B.ipca)}<small>% em 12 meses</small></div><p class="plain">O que custava R$ 100 passou a custar cerca de R$ ${f2(100+B.ipca)}. O limite da meta é 4,5%.</p><p class="src">IBGE · até set/2026</p>`],
+    ["good",`<div class="head"><h3>Segurança</h3>${tag("good","Melhorou em 2025")}</div><div class="big">${f1(B.mvi)}<small>mortes por 100 mil</small></div><p class="plain">As mortes violentas caíram ${f1(-B.mviVar)}% em 2025, o menor nível em 14 anos.</p><p class="src">Anuário de Segurança Pública 2026</p>`],
+    ["good",`<div class="head"><h3>Educação</h3>${tag("good","Melhorou")}</div><div class="big">${f1(B.idebAI)}<small>de 10 no Ideb</small></div><p class="plain">Primeiros anos do fundamental. Era ${f1(B.idebAI23)} em 2023. Ensino médio: ${f1(B.idebEM)} (era ${f1(B.idebEM23)}).</p><p class="src">Inep/MEC · Ideb 2025</p>`],
+    ["bad",`<div class="head"><h3>Dívida do governo</h3>${tag("bad","Piorou")}</div><div class="big">${f1(B.divida)}<small>% do PIB</small></div><p class="plain">Para cada R$ 100 que o país produz em um ano, o governo deve cerca de R$ ${Math.round(B.divida)}. Maior nível desde 2021.</p><p class="src">Banco Central · ago/2026</p>`],
+    ["same",`<div class="head"><h3>Juros (Selic)</h3>${tag("same","Caindo devagar")}</div><div class="big">${f2(B.selic)}<small>% ao ano</small></div><p class="plain">Juros altos deixam empréstimos e compras parceladas mais caros. A taxa está caindo desde março.</p><p class="src">Banco Central · out/2026</p>`],
+    ["",`<span class="role">Presidente eleito para 2027–2030</span><span class="name">Lula <span style="font-weight:500">(PT)</span></span><p>Reeleito no 2º turno com <b class="mono">51,79%</b> contra Flávio Bolsonaro (PL), com 48,21%. Vice: Geraldo Alckmin (PSB).</p>`,"person"],
+    ["same",`<span class="role">O que o povo acha do governo</span><span class="name">${B.aprova}% aprovam · ${B.desaprova}% desaprovam</span><p>Quaest, set/2026. A diferença está dentro da margem de erro: o país está dividido.</p>`,"person"],
+    ["",`<span class="role">Brasil no mundo</span><span class="name" style="font-size:1.3rem">Relações com outros países</span><p>${R.filter(r=>r[3]==="good").length} em boa fase e ${R.filter(r=>r[3]==="bad").length} com tensão, como ${R.filter(r=>r[3]==="bad").map(r=>r[1]).slice(0,3).join(", ")}.</p><span class="go">Ver países ›</span>`,"person","#mundo"]
+  ];
+  return `<section class="carousel" aria-roledescription="carrossel" aria-labelledby="car-t">
+    <div class="car-head"><h2 id="car-t" style="font-size:1.3rem">Como está o Brasil</h2><span class="muted" style="font-size:.85rem">Arraste para o lado ›</span></div>
+    <div class="car-track" id="car" tabindex="0">${slides.map(([k,html,cls,href],i)=> href
+      ? `<a class="box ${cls||"ind"} k-${k||"x"} card-link" href="${href}" aria-roledescription="slide" aria-label="${i+1} de ${slides.length}" style="color:inherit;text-decoration:none">${html}</a>`
+      : `<article class="box ${cls||"ind"} k-${k||"x"}" aria-roledescription="slide" aria-label="${i+1} de ${slides.length}">${html}</article>`).join("")}</div>
+    <div class="car-nav"><button type="button" class="btn car-arrow" id="car-prev" aria-label="Anterior">‹</button><div class="car-dots" id="car-dots">${slides.map((_,i)=>`<button type="button" data-i="${i}" aria-label="Ir para o cartão ${i+1}"></button>`).join("")}</div><button type="button" class="btn car-arrow" id="car-next" aria-label="Próximo">›</button></div>
+  </section>`;
+}
+function wireCarousel(){
+  const t = $("car"); if (!t) return;
+  const items = [...t.children], dots = [...$("car-dots").children];
+  const cur = () => { const x = t.scrollLeft; let best=0, bd=1e9; items.forEach((el,i)=>{ const d=Math.abs(el.offsetLeft - t.offsetLeft - x); if(d<bd){bd=d;best=i;} }); return best; };
+  const mark = () => { const c = cur(); dots.forEach((d,i)=>d.setAttribute("aria-current", i===c)); };
+  const go = i => { i = (i+items.length)%items.length; t.scrollTo({left: items[i].offsetLeft - t.offsetLeft, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); };
+  const stop = () => { if (carTimer){ clearInterval(carTimer); carTimer=null; } };
+  t.addEventListener("scroll", ()=>requestAnimationFrame(mark), {passive:true});
+  $("car-prev").onclick = ()=>{ stop(); go(cur()-1); };
+  $("car-next").onclick = ()=>{ stop(); go(cur()+1); };
+  dots.forEach((d,i)=>d.onclick=()=>{ stop(); go(i); });
+  ["pointerdown","touchstart","focusin","wheel"].forEach(ev=>t.addEventListener(ev, stop, {passive:true}));
+  t.addEventListener("keydown", e=>{ if(e.key==="ArrowRight"){ stop(); go(cur()+1); e.preventDefault(); } if(e.key==="ArrowLeft"){ stop(); go(cur()-1); e.preventDefault(); } });
+  mark(); stop();
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) carTimer = setInterval(()=>{ if (!document.body.contains(t)) return stop(); go(cur()+1); }, 6000);
 }
 
 /* ============ RELÓGIO ============ */
@@ -1734,7 +1903,7 @@ function setTab(t){ ["brasil","estados","mundo","aprender"].forEach(x=>{ const e
 function wireMap(){
   renderMap();
   if (!MAPS.brasil) loadMap("brasil").then(d=>{ if (d && $("tilemap")) renderMap(); });
-  document.querySelector("#view .chips").addEventListener("click", e=>{ const b=e.target.closest("[data-m]"); if(!b) return; metric=b.dataset.m; renderMap(); $("m-"+metric).focus(); });
+  document.querySelector("#view [data-m]").closest(".chips").addEventListener("click", e=>{ const b=e.target.closest("[data-m]"); if(!b) return; metric=b.dataset.m; renderMap(); $("m-"+metric).focus(); });
 }
 function route(){
   const h = (location.hash || "#brasil").slice(1).toLowerCase();
@@ -1765,7 +1934,8 @@ function route(){
     setTab("aprender"); document.title = "Painel do Cidadão · Aprender"; return;
   }
   if (h === "estados"){
-    $("view").innerHTML = estadosView(); wireMap(); wireCitySearch();
+    $("view").innerHTML = estadosView(); wireMap(); wireCitySearch(); wireRank();
+    if (window._goto){ const g=$(window._goto); window._goto=null; if (g) setTimeout(()=>g.scrollIntoView({block:"start"}), 60); }
     setTab("estados"); document.title = "Painel do Cidadão · Estados"; return;
   }
   if (h === "comparar"){
@@ -1793,6 +1963,7 @@ function route(){
   $("uf-table").addEventListener("click", go);
   $("uf-table").addEventListener("keydown", e => { if (e.key==="Enter") go(e); });
   wireAlert(); wireFollow(); wireCongress(); wireFeed();
+  wireCarousel();
   setTab("brasil"); document.title = "Painel do Cidadão";
 }
 
