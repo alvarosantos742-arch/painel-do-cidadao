@@ -206,6 +206,10 @@ tbody tr:hover{background:var(--wash)}
 .rel ul{margin:10px 0 0 18px;display:grid;gap:6px}
 .rel .more{font-size:.85rem;color:var(--muted)}
 details[open] .more{display:none}
+.histbox .pr{grid-template-columns:1fr!important}
+.histbox .pr .tag,.car-track .tag{align-self:start;justify-self:start}
+.gprom summary{cursor:pointer;color:var(--fg);padding:6px 0}
+.gprom[open] summary{margin-bottom:8px}
 .wr{display:grid;grid-template-columns:1.8rem 8.5rem 1fr 4.6rem;gap:8px;align-items:center;padding:3px 4px;border-radius:6px}
 .wr.me{background:var(--wash);font-weight:700;outline:1.5px solid var(--fg)}
 .wr .n{font-family:var(--f-mono);font-size:.78rem;color:var(--faint)}
@@ -560,6 +564,55 @@ const DATA = {
   /* deputados federais por estado (lei atual, 513 no total) */
   vagasCamara: {SP:70,MG:53,RJ:46,BA:39,RS:31,PR:30,PE:25,CE:22,MA:18,GO:17,PA:17,SC:16,PB:12,ES:10,PI:10,AL:9,AC:8,AM:8,AP:8,DF:8,MS:8,MT:8,RN:8,RO:8,RR:8,SE:8,TO:8},
   /* mundo: ISO2 → [nome, PIB per capita PPC 2026 (FMI, dólar internacional), homicídios por 100 mil (UNODC), ano, IDH 2023 (PNUD, relatório 2025)] */
+  /* promessas por político: chave igual ao historico.json (g<UF> governador, c<UF>/m<IBGE> prefeito, d<id Câmara>, s<código Senado>)
+     → {f:[fonte,url,data], i:[[promessa, status, nota]]}. Status: Cumprida · Em andamento · Em votação · Atrasada · Não cumprida · Sem notícia · Começa em 2027 */
+  promessas: {
+    gSP:{f:["BNews São Paulo","https://www.bnewssaopaulo.com.br/noticias/politica/conheca-as-propostas-de-tarcisio-para-o-segundo-mandato-em-sao-paulo.html","2026-10-06"],i:[
+      ["Alfabetizar 90% das crianças até o fim de 2030","Começa em 2027","Com reforço escolar e tutoria em português e matemática."],
+      ["Aumentar em 40% os atendimentos de saúde a distância","Começa em 2027","Pelo programa SP Inova Saúde, para facilitar a consulta com especialistas."],
+      ["Vacinar pelo menos 95% do público nas vacinas acompanhadas","Começa em 2027",""],
+      ["Concluir a privatização da Sabesp","Começa em 2027","Prazo e valor não informados."],
+      ["Integrar os dados das polícias e ampliar a Muralha Paulista","Começa em 2027","Sem meta em números."],
+      ["Novas linhas de metrô, trem, VLT e BRT","Começa em 2027","Extensão e prazos não informados."]]},
+    gPR:{f:["CNN Brasil","https://www.cnnbrasil.com.br/eleicoes/quem-e-sergio-moro-candidato-ao-governo-do-parana/","2026-09-15"],i:[
+      ["Manter as escolas cívico-militares","Começa em 2027",""],
+      ["Ampliar os colégios de ensino médio em tempo integral","Começa em 2027","Com formação voltada ao mercado de trabalho."],
+      ["Criar forças-tarefa contra o crime organizado","Começa em 2027","Inspiradas na Operação Lava Jato, juntando vários órgãos."],
+      ["Construir um presídio estadual de segurança máxima","Começa em 2027","Para chefes de facção, assassinos de policiais e feminicidas."]]},
+    gMG:{f:["Muita Informação","https://muitainformacao.com.br/eleicoes/cleitinho-e-eleito-governador-de-minas-no-1o-turno-e-anuncia-reducao-do-ipva-entre-prioridades-do-governo/","2026-10-04"],i:[
+      ["Reduzir as filas de cirurgias eletivas em até um ano e meio","Começa em 2027","Prazo dito pelo próprio governador eleito."],
+      ["Baixar o IPVA","Começa em 2027","Percentual não informado."],
+      ["Renegociar a dívida de Minas com a União","Começa em 2027","O dinheiro economizado iria para estradas e saúde."],
+      ["Dar pelo menos a reposição da inflação aos servidores","Começa em 2027",""],
+      ["Rever as isenções de impostos dadas a empresas","Começa em 2027",""]]},
+    gPE:{f:["Diario de Pernambuco","https://www.diariodepernambuco.com.br/politica/2026/10/11725771-reeleicao-de-raquel-lyra-relembre-as-principais-promessas-de-campanha-para-proximo-mandato.html","2026-10-04"],i:[
+      ["30 novas escolas técnicas e 100 mil vagas em cursos técnicos","Começa em 2027",""],
+      ["Entregar 250 creches","Começa em 2027","100 até o fim de 2026 e o restante até o 1º semestre de 2027."],
+      ["Construir o Hospital Regional de Petrolina","Começa em 2027","Investimento estimado em R$ 300 milhões."],
+      ["15 Delegacias da Mulher abertas 24 horas","Começa em 2027","Com concurso de 3,9 mil vagas para as forças de segurança."],
+      ["Levar o Morar Bem PE a 50 mil famílias","Começa em 2027","Objetivo: acabar com as palafitas."],
+      ["Ampliar o Mães de Pernambuco de 100 mil para 150 mil mães","Começa em 2027",""]]},
+    gCE:{f:["Diário do Nordeste","https://diariodonordeste.verdesmares.com.br/pontopoder/apos-reeleicao-elmano-cita-quadrante-seguro-como-prioridade-e-antecipa-estrategia-pro-lula-no-ce-1.3796590","2026-10-05"],i:[
+      ["Implantar o \"Quadrante Seguro\" nos primeiros 100 dias","Começa em 2027","Reforço policial e prevenção, começando por uma área com ameaças a comerciantes."],
+      ["Fortalecer a Polícia Civil","Começa em 2027",""],
+      ["Novas ferramentas de inteligência para a polícia","Começa em 2027",""]]},
+    gGO:{f:["O Hoje","https://ohoje.com/2026/08/13/planos-de-governo-daniel-aposta-em-continuidade-luis-cesar-propoe-ruptura/","2026-08-13"],i:[
+      ["Ampliar o Hugo de 342 para 460 leitos","Começa em 2027","Hospital de Urgências de Goiânia."],
+      ["Criar um Hospital da Mulher","Começa em 2027",""],
+      ["Criar um distrito de inteligência artificial","Começa em 2027",""],
+      ["BRT Luziânia–Santa Maria e ligação Águas Lindas–Ceilândia","Começa em 2027","Transporte integrado com o Distrito Federal."],
+      ["Duplicar trechos críticos de rodovias","Começa em 2027","Trechos não especificados."]]},
+    gMA:{f:["Imirante","https://m.imirante.com/noticias/sao-luis/2026/08/28/ipolitica-conheca-o-plano-de-governo-do-candidato-eduardo-braide","2026-08-28"],i:[
+      ["Criar a Força Estadual de Combate à Pobreza","Começa em 2027","Estado, prefeituras, empresas e entidades juntos."],
+      ["Pagar um 13º do Maranhão Livre da Fome","Começa em 2027","E ampliar os Restaurantes Populares."],
+      ["Construir hospitais regionais (\"Hospital Novo\")","Começa em 2027",""],
+      ["Construir escolas e climatizar as salas (\"Escola Nova\")","Começa em 2027",""],
+      ["Câmeras com reconhecimento facial (\"Muralha Digital\")","Começa em 2027",""],
+      ["Recuperar e asfaltar estradas (Estrada Nova e Asfalto Novo)","Começa em 2027",""]]},
+    gRS:{f:["Jornal do Comércio","https://www.jornaldocomercio.com/politica/2026/08/1259790-zucco-lanca-plano-de-governo-com-foco-na-seguranca-publica-e-retomada-economica-do-estado.html","2026-08-14"],i:[
+      ["Não criar impostos nem aumentar alíquotas","Começa em 2027",""],
+      ["Combater o crime e retomar o crescimento da economia","Começa em 2027","O plano \"O Rio Grande Pode Mais\" não traz metas em números."]]}
+  },
   relacoesAtualizado: "2026-10-27",
   /* relações: [ISO2, país, situação, tipo good|bad|same, resumo, [fatos], [[fonte, url, data]]] */
   relacoes: [
@@ -795,7 +848,7 @@ function avatar(n,p,big){ return `<span class="av${big?" big":""}" style="backgr
 function follows(){ try { return JSON.parse(store.get("seguePol")||"[]"); } catch(e){ return []; } }
 function setFollows(a){ store.set("seguePol", JSON.stringify(a)); }
 function followBtn(key){ const on = follows().includes(key); return `<button type="button" class="follow" data-seg="${key}" aria-pressed="${on}">${on?"✓ Seguindo":"+ Seguir"}</button>`; }
-function histToggle(key){ return `<button type="button" class="follow" data-histbtn="${key}" aria-expanded="false">Histórico e perfil</button>`; }
+function histToggle(key){ return `<button type="button" class="follow" data-histbtn="${key}" aria-expanded="false">${(DATA.promessas||{})[key]?`Promessas (${DATA.promessas[key].i.length}) e histórico`:"Promessas e histórico"}</button>`; }
 let HIST = null, histLoading = null;
 function loadHist(){
   if (HIST) return Promise.resolve(HIST);
@@ -807,11 +860,25 @@ function perfilUrl(key){
   if (key[0]==="s") return "https://www25.senado.leg.br/web/senadores/senador/-/perfil/"+key.slice(1);
   return null;
 }
+
+/* ============ PROMESSAS POR POLÍTICO ============ */
+function promTag(st){ return tag(st==="Cumprida"?"good":(st==="Atrasada"||st==="Não cumprida")?"bad":(st==="Em andamento"||st==="Em votação")?"same":"na", st); }
+function promHTML(key, open){
+  const P = (DATA.promessas||{})[key];
+  if (!P) {
+    const leg = key[0]==="d" || key[0]==="s";
+    return `<div class="histbox"><b class="eyebrow">Promessas</b><p class="muted" style="font-size:.9rem">${leg ? "Deputados e senadores não entregam plano de governo ao TSE. Estamos reunindo o que cada um prometeu na campanha, e as promessas entram aqui aos poucos." : "As promessas deste político ainda não foram registradas no painel. Elas entram nas próximas atualizações."}</p></div>`;
+  }
+  const n = P.i.length, cumpr = P.i.filter(x=>x[1]==="Cumprida").length;
+  return `<div class="histbox"><b class="eyebrow">Promessas · ${cumpr} de ${n} cumpridas</b>
+    <div class="prom">${P.i.map(([t,st,nota])=>`<div class="pr"><b>${t}</b>${promTag(st)}${nota?`<p>${nota}</p>`:""}</div>`).join("")}</div>
+    <p class="src">Fonte das promessas: <a href="${P.f[1]}" target="_blank" rel="noopener">${P.f[0]}</a> (${P.f[2].split("-").reverse().join("/")}). O andamento é revisto nas atualizações diárias.</p></div>`;
+}
 function histHTML(key){
   const h = (HIST||{})[key];
   const rows = h && h.length ? `<ul class="hist">${h.slice().reverse().map(([ano,cg,loc,par,res])=>{ const [rl,rc] = RES_LAB[res]||[res,"X"]; return `<li><b class="mono">${ano}</b><span>${CARGO_LAB[cg]||cg} · ${prettyLoc(loc)} · ${par}</span><span class="kchip ${rc}">${rl}</span></li>`; }).join("")}</ul>` : `<p class="muted" style="font-size:.9rem">Sem histórico eleitoral encontrado desde 2018.</p>`;
   const pu = perfilUrl(key);
-  return `<div class="histbox"><b class="eyebrow">Eleições disputadas desde 2018</b>${rows}
+  return `${promHTML(key)}<div class="histbox"><b class="eyebrow">Eleições disputadas desde 2018</b>${rows}
     <p class="src">Fonte: TSE. ${pu?`<a href="${pu}" target="_blank" rel="noopener"><b>Ver perfil oficial e foto ›</b></a>`:""}</p></div>`;
 }
 document.addEventListener("click", e=>{
@@ -823,7 +890,7 @@ document.addEventListener("click", e=>{
   const h = e.target.closest("[data-histbtn]");
   if (h){ const k = h.dataset.histbtn, slot = h.closest(".rx, .person, .mp, .cand")?.querySelector(`[data-hist="${k}"]`); if (!slot) return;
     const open = slot.hidden; slot.hidden = !open; h.setAttribute("aria-expanded", open);
-    if (open){ slot.innerHTML = `<p class="muted" style="font-size:.9rem">Carregando histórico…</p>`; loadHist().then(()=>{ slot.innerHTML = histHTML(k); }); }
+    if (open){ slot.innerHTML = promHTML(k) + `<p class="muted" style="font-size:.9rem">Carregando histórico…</p>`; loadHist().then(()=>{ slot.innerHTML = histHTML(k); }); }
   }
 });
 function polInfo(key){
@@ -842,7 +909,7 @@ function mentions(name){
 }
 function meusPolHTML(){
   const ks = follows();
-  if (!ks.length) return `<section id="meuspol" class="box soft" style="display:grid;gap:8px"><span class="eyebrow">Meus políticos</span><p class="plain">Acompanhe quem você ajudou a eleger. Toque em <b>+ Seguir</b> ao lado de um deputado, senador, governador ou prefeito, no <a href="#congresso">Raio-X</a> ou na página da sua cidade, e ele aparece aqui.</p></section>`;
+  if (!ks.length) return `<div id="meuspol" hidden></div>`;
   const items = ks.map(k=>[k,polInfo(k)]).filter(([,i])=>i);
   return `<section id="meuspol" class="box" style="display:grid;gap:10px" aria-labelledby="mp-t"><div><span class="eyebrow">Você segue ${items.length}</span><h2 id="mp-t" style="font-size:1.4rem">Meus políticos</h2></div>
     ${items.map(([k,i])=>{ const ms = mentions(i.n); return `<div class="mp">${avatar(i.n,i.p,true)}<div class="mp-body"><a href="${i.href}" class="nm">${i.n}</a> <span class="pp-tag">${i.p}</span><div class="muted" style="font-size:.88rem">${i.cargo}${i.extra?` · ${i.extra}`:""}</div>
@@ -1090,6 +1157,7 @@ function stateView(k){
       <span class="role">Governo do estado · eleito para 2027–2030</span>
       <span class="name">${s.gov} <span style="font-weight:500">(${s.part})</span></span>
       <p>${gov2 ? "Reeleito" : "Eleito"} no ${s.turno}º turno com <b class="mono">${f2(s.pct)}%</b> dos votos válidos.${gov2 ? "" : ` Hoje quem governa é ${s.govAtual}, até 31/12/2026.`}</p>
+      ${DATA.promessas["g"+k] ? `<details class="gprom"><summary><b>O que prometeu: ${DATA.promessas["g"+k].i.length} promessas ›</b></summary>${promHTML("g"+k)}</details>` : ""}
       <div class="kv">${followBtn("g"+k)} ${histToggle("g"+k)}</div><div class="hist-slot" data-hist="g${k}" hidden></div>
     </article>
     <article class="box person">
@@ -1727,6 +1795,7 @@ function brasilView(){
   <div class="crumb"><b>Brasil</b> · país todo</div>
   ${alertHTML()}
   ${carouselHTML()}
+  ${promCarHTML()}
   ${boletimHTML()}
   <div class="cards">
     <a class="box card-link" href="#congresso"><h3 style="font-family:var(--f-display);font-size:1.3rem">O que anda fazendo quem você elegeu?</h3><span class="muted" style="font-size:.9rem">Como vota, se aparece para trabalhar e o histórico de deputados, senadores e prefeitos.</span><span class="go">Descobrir ›</span></a>
@@ -1749,11 +1818,6 @@ function brasilView(){
     <div class="progress"><b id="pct-bar" style="width:0%"></b></div>
   </div>
   ${congressHTML()}
-  <article class="box">
-    <h3 style="margin-bottom:6px">Promessas do presidente</h3>
-    <p class="muted" style="font-size:.9rem;margin-bottom:6px">Toque em "Me avise na próxima visita": se a situação mudar, o site mostra um aviso quando você abrir de novo neste celular.</p>
-    <div class="prom">${(()=>{ const f = followed(); return B.promises.map(([t,st,n])=>`<div class="pr"><b>${t}</b>${tag(st==="Cumprida"?"good":st==="Atrasada"?"bad":st==="Em votação"?"same":"na",st)}<p>${n}</p><div style="grid-column:1/-1"><button type="button" class="follow" data-follow="${t}" aria-pressed="${t in f}">${t in f?"✓ Aviso ligado":"Me avise na próxima visita"}</button></div></div>`).join(""); })()}</div>
-  </article>
   ${feedHTML()}
   ${candidatosHTML()}
   ${mapHTML()}
@@ -1871,21 +1935,39 @@ function carouselHTML(){
     <div class="car-nav"><button type="button" class="btn car-arrow" id="car-prev" aria-label="Anterior">‹</button><div class="car-dots" id="car-dots">${slides.map((_,i)=>`<button type="button" data-i="${i}" aria-label="Ir para o cartão ${i+1}"></button>`).join("")}</div><button type="button" class="btn car-arrow" id="car-next" aria-label="Próximo">›</button></div>
   </section>`;
 }
-function wireCarousel(){
-  const t = $("car"); if (!t) return;
-  const items = [...t.children], dots = [...$("car-dots").children];
+
+function promCarHTML(){
+  const f = followed(), P = B.promises, n = P.length;
+  const cnt = st => P.filter(x=>x[1]===st).length;
+  const kind = st => st==="Cumprida"?"good":st==="Atrasada"?"bad":st==="Em votação"?"same":"x";
+  return `<section class="carousel" aria-roledescription="carrossel" aria-labelledby="pc-t">
+    <div class="car-head"><div><h2 id="pc-t" style="font-size:1.3rem">O presidente está cumprindo o que prometeu?</h2>
+      <p class="muted" style="font-size:.88rem">${[[cnt("Cumprida"),"cumprida","cumpridas"],[cnt("Em votação"),"em votação","em votação"],[cnt("Atrasada"),"atrasada","atrasadas"],[n-cnt("Cumprida")-cnt("Em votação")-cnt("Atrasada"),"ainda não começou","ainda não começaram"]].filter(x=>x[0]).map(([v,a,b])=>`${v} ${v===1?a:b}`).join(" · ")}. Toque em "Me avise" e o site mostra um aviso se algo mudar.</p></div>
+      <span class="muted" style="font-size:.85rem">Arraste para o lado ›</span></div>
+    <div class="car-track" id="pc" tabindex="0">${P.map(([t,st,nota],i)=>`<article class="box ind k-${kind(st)}" aria-roledescription="slide" aria-label="${i+1} de ${n}">
+      <div class="head"><h3>${t}</h3></div>${tag(st==="Cumprida"?"good":st==="Atrasada"?"bad":st==="Em votação"?"same":"na",st)}
+      <p class="plain">${nota}</p>
+      <div><button type="button" class="follow" data-follow="${t}" aria-pressed="${t in f}">${t in f?"✓ Aviso ligado":"Me avise na próxima visita"}</button></div>
+    </article>`).join("")}</div>
+    <div class="car-nav"><button type="button" class="btn car-arrow" id="pc-prev" aria-label="Promessa anterior">‹</button><div class="car-dots" id="pc-dots">${P.map((_,i)=>`<button type="button" data-i="${i}" aria-label="Ir para a promessa ${i+1}"></button>`).join("")}</div><button type="button" class="btn car-arrow" id="pc-next" aria-label="Próxima promessa">›</button></div>
+  </section>`;
+}
+function wireCarousel(id="car", auto=true){
+  const t = $(id); if (!t) return;
+  const items = [...t.children], dots = [...$(id+"-dots").children];
   const cur = () => { const x = t.scrollLeft; let best=0, bd=1e9; items.forEach((el,i)=>{ const d=Math.abs(el.offsetLeft - t.offsetLeft - x); if(d<bd){bd=d;best=i;} }); return best; };
   const mark = () => { const c = cur(); dots.forEach((d,i)=>d.setAttribute("aria-current", i===c)); };
   const go = i => { i = (i+items.length)%items.length; t.scrollTo({left: items[i].offsetLeft - t.offsetLeft, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); };
-  const stop = () => { if (carTimer){ clearInterval(carTimer); carTimer=null; } };
+  let timer = null;
+  const stop = () => { if (timer){ clearInterval(timer); timer=null; } if (auto && carTimer){ clearInterval(carTimer); carTimer=null; } };
   t.addEventListener("scroll", ()=>requestAnimationFrame(mark), {passive:true});
-  $("car-prev").onclick = ()=>{ stop(); go(cur()-1); };
-  $("car-next").onclick = ()=>{ stop(); go(cur()+1); };
+  $(id+"-prev").onclick = ()=>{ stop(); go(cur()-1); };
+  $(id+"-next").onclick = ()=>{ stop(); go(cur()+1); };
   dots.forEach((d,i)=>d.onclick=()=>{ stop(); go(i); });
   ["pointerdown","touchstart","focusin","wheel"].forEach(ev=>t.addEventListener(ev, stop, {passive:true}));
   t.addEventListener("keydown", e=>{ if(e.key==="ArrowRight"){ stop(); go(cur()+1); e.preventDefault(); } if(e.key==="ArrowLeft"){ stop(); go(cur()-1); e.preventDefault(); } });
   mark(); stop();
-  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) carTimer = setInterval(()=>{ if (!document.body.contains(t)) return stop(); go(cur()+1); }, 6000);
+  if (auto && !matchMedia("(prefers-reduced-motion: reduce)").matches) timer = carTimer = setInterval(()=>{ if (!document.body.contains(t)) return stop(); go(cur()+1); }, 6000);
 }
 
 /* ============ RELÓGIO ============ */
@@ -1969,7 +2051,7 @@ function route(){
   $("uf-table").addEventListener("click", go);
   $("uf-table").addEventListener("keydown", e => { if (e.key==="Enter") go(e); });
   wireAlert(); wireFollow(); wireCongress(); wireFeed();
-  wireCarousel();
+  wireCarousel(); wireCarousel("pc", false);
   setTab("brasil"); document.title = "Painel do Cidadão";
 }
 
