@@ -1539,12 +1539,14 @@ function myUFHTML(){
   if (mc) return `<a class="box myuf" href="#m${mc[0]}">
     <span class="eyebrow">Sua cidade</span>
     <span class="myuf-row"><span class="person"><span class="name">${mc[1]} · ${k}</span></span><span class="go" aria-hidden="true">Ver ›</span></span>
-    <span class="plain">Prefeitura: ${(x.cap===mc[1] && DATA.capitais[k]) ? DATA.capitais[k][0] : (mc[6]||"sem registro")} · Estado: ${x.nome}</span>
+    <span class="plain">Prefeito(a) atual: <b>${(x.cap===mc[1] && DATA.capitais[k]) ? DATA.capitais[k][0]+(DATA.capitais[k][1]?" ("+DATA.capitais[k][1]+")":"") : (mc[6] ? mc[6]+(mc[7]?" ("+mc[7]+")":"") : "sem registro")}</b> · mandato até 2028</span>
+    <span class="plain">Governo do estado (${x.nome}) 2027–2030: ${x.gov}</span>
   </a>`;
   return `<a class="box myuf" href="#${k.toLowerCase()}">
     <span class="eyebrow">Seu estado</span>
     <span class="myuf-row"><span class="person"><span class="name">${x.nome}</span></span><span class="go" aria-hidden="true">Ver ›</span></span>
     <span class="plain">Desemprego ${f1(x.d26)}% (${dd<0?"▲ melhorou":dd>0?"▼ piorou":"= igual"}) · Governo 2027–2030: ${x.gov}</span>
+    ${DATA.capitais[k] ? `<span class="plain">Prefeito(a) de ${x.cap}: <b>${DATA.capitais[k][0]}${DATA.capitais[k][1]?" ("+DATA.capitais[k][1]+")":""}</b> · mandato até 2028</span>` : ""}
   </a>`;
 }
 
@@ -1652,7 +1654,6 @@ function brasilView(){
   ${alertHTML()}
   ${myUFHTML()}
   ${meusPolHTML()}
-
   <div class="box" style="display:grid;gap:12px">
     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
       <h2 id="cd-title" style="font-size:1.2rem">Faltam para a posse do presidente</h2>
@@ -1667,7 +1668,20 @@ function brasilView(){
     <div style="display:flex;justify-content:space-between;font-size:.92rem"><span>Mandato já passou</span><span class="mono" id="pct">0,0000%</span></div>
     <div class="progress"><b id="pct-bar" style="width:0%"></b></div>
   </div>
-
+  ${congressHTML()}
+  <article class="box">
+    <h3 style="margin-bottom:6px">Promessas do presidente</h3>
+    <p class="muted" style="font-size:.9rem;margin-bottom:6px">Toque em "Me avise na próxima visita": se a situação mudar, o site mostra um aviso quando você abrir de novo neste celular.</p>
+    <div class="prom">${(()=>{ const f = followed(); return B.promises.map(([t,st,n])=>`<div class="pr"><b>${t}</b>${tag(st==="Cumprida"?"good":st==="Atrasada"?"bad":st==="Em votação"?"same":"na",st)}<p>${n}</p><div style="grid-column:1/-1"><button type="button" class="follow" data-follow="${t}" aria-pressed="${t in f}">${t in f?"✓ Aviso ligado":"Me avise na próxima visita"}</button></div></div>`).join(""); })()}</div>
+  </article>
+  <div class="inds">
+    <article class="box ind"><div class="head"><h3>Emprego</h3>${tag("good","Melhorou")}</div><div class="big">${f1(B.desemp[0])}<small>% sem emprego</small></div><p class="plain">Era ${f1(B.desemp[1])}% um ano antes. É o menor nível desde 2012.</p><p class="src">IBGE · abr–jun 2026</p></article>
+    <article class="box ind"><div class="head"><h3>Preços</h3>${tag("bad","Acima do limite")}</div><div class="big">${f2(B.ipca)}<small>% em 12 meses</small></div><p class="plain">O que custava R$ 100 passou a custar cerca de R$ ${f2(100+B.ipca)}. O limite da meta é 4,5%.</p><p class="src">IBGE · até set/2026</p></article>
+    <article class="box ind"><div class="head"><h3>Segurança</h3>${tag("good","Melhorou em 2025")}</div><div class="big">${f1(B.mvi)}<small>mortes por 100 mil</small></div><p class="plain">As mortes violentas caíram ${f1(-B.mviVar)}% em 2025, o menor nível em 14 anos.</p><p class="src">Anuário de Segurança Pública 2026</p></article>
+    <article class="box ind"><div class="head"><h3>Educação</h3>${tag("good","Melhorou")}</div><div class="big">${f1(B.idebAI)}<small>de 10 no Ideb</small></div><p class="plain">Primeiros anos do fundamental. Era ${f1(B.idebAI23)} em 2023. Ensino médio: ${f1(B.idebEM)} (era ${f1(B.idebEM23)}).</p><p class="src">Inep/MEC · Ideb 2025</p></article>
+    <article class="box ind"><div class="head"><h3>Dívida do governo</h3>${tag("bad","Piorou")}</div><div class="big">${f1(B.divida)}<small>% do PIB</small></div><p class="plain">Para cada R$ 100 que o país produz em um ano, o governo deve cerca de R$ ${Math.round(B.divida)}. Maior nível desde 2021.</p><p class="src">Banco Central · ago/2026</p></article>
+    <article class="box ind"><div class="head"><h3>Juros (Selic)</h3>${tag("same","Caindo devagar")}</div><div class="big">${f2(B.selic)}<small>% ao ano</small></div><p class="plain">Juros altos deixam empréstimos e compras parceladas mais caros. A taxa está caindo desde março.</p><p class="src">Banco Central · out/2026</p></article>
+  </div>
   <div class="people">
     <article class="box person">
       <span class="role">Presidente eleito para 2027–2030</span>
@@ -1680,38 +1694,15 @@ function brasilView(){
       <p>Quaest, set/2026. A diferença está dentro da margem de erro: o país está dividido.</p>
     </article>
   </div>
-
   ${feedHTML()}
-
   ${candidatosHTML()}
-
   ${mapHTML()}
-
   ${newsHTML("")}
-
   <div class="cards">
     <a class="box card-link" href="#congresso"><span class="eyebrow">Raio-x</span><h3 style="font-family:var(--f-display);font-size:1.3rem">Deputados, senadores e prefeitos: votos, presença e histórico</h3><span class="go">Procurar ›</span></a>
     <a class="box card-link" href="#calculadora"><span class="eyebrow">Calculadora</span><h3 style="font-family:var(--f-display);font-size:1.3rem">Quanto a inflação comeu do seu salário</h3><span class="go">Calcular ›</span></a>
     <a class="box card-link" href="#aprender"><span class="eyebrow">Aprender</span><h3 style="font-family:var(--f-display);font-size:1.3rem">Como funciona o governo, com teste no final</h3><span class="go">Começar ›</span></a>
   </div>
-
-  <div class="inds">
-    <article class="box ind"><div class="head"><h3>Emprego</h3>${tag("good","Melhorou")}</div><div class="big">${f1(B.desemp[0])}<small>% sem emprego</small></div><p class="plain">Era ${f1(B.desemp[1])}% um ano antes. É o menor nível desde 2012.</p><p class="src">IBGE · abr–jun 2026</p></article>
-    <article class="box ind"><div class="head"><h3>Preços</h3>${tag("bad","Acima do limite")}</div><div class="big">${f2(B.ipca)}<small>% em 12 meses</small></div><p class="plain">O que custava R$ 100 passou a custar cerca de R$ ${f2(100+B.ipca)}. O limite da meta é 4,5%.</p><p class="src">IBGE · até set/2026</p></article>
-    <article class="box ind"><div class="head"><h3>Segurança</h3>${tag("good","Melhorou em 2025")}</div><div class="big">${f1(B.mvi)}<small>mortes por 100 mil</small></div><p class="plain">As mortes violentas caíram ${f1(-B.mviVar)}% em 2025, o menor nível em 14 anos.</p><p class="src">Anuário de Segurança Pública 2026</p></article>
-    <article class="box ind"><div class="head"><h3>Educação</h3>${tag("good","Melhorou")}</div><div class="big">${f1(B.idebAI)}<small>de 10 no Ideb</small></div><p class="plain">Primeiros anos do fundamental. Era ${f1(B.idebAI23)} em 2023. Ensino médio: ${f1(B.idebEM)} (era ${f1(B.idebEM23)}).</p><p class="src">Inep/MEC · Ideb 2025</p></article>
-    <article class="box ind"><div class="head"><h3>Dívida do governo</h3>${tag("bad","Piorou")}</div><div class="big">${f1(B.divida)}<small>% do PIB</small></div><p class="plain">Para cada R$ 100 que o país produz em um ano, o governo deve cerca de R$ ${Math.round(B.divida)}. Maior nível desde 2021.</p><p class="src">Banco Central · ago/2026</p></article>
-    <article class="box ind"><div class="head"><h3>Juros (Selic)</h3>${tag("same","Caindo devagar")}</div><div class="big">${f2(B.selic)}<small>% ao ano</small></div><p class="plain">Juros altos deixam empréstimos e compras parceladas mais caros. A taxa está caindo desde março.</p><p class="src">Banco Central · out/2026</p></article>
-  </div>
-
-  ${congressHTML()}
-
-  <article class="box">
-    <h3 style="margin-bottom:6px">Promessas do presidente</h3>
-    <p class="muted" style="font-size:.9rem;margin-bottom:6px">Toque em "Me avise na próxima visita": se a situação mudar, o site mostra um aviso quando você abrir de novo neste celular.</p>
-    <div class="prom">${(()=>{ const f = followed(); return B.promises.map(([t,st,n])=>`<div class="pr"><b>${t}</b>${tag(st==="Cumprida"?"good":st==="Atrasada"?"bad":st==="Em votação"?"same":"na",st)}<p>${n}</p><div style="grid-column:1/-1"><button type="button" class="follow" data-follow="${t}" aria-pressed="${t in f}">${t in f?"✓ Aviso ligado":"Me avise na próxima visita"}</button></div></div>`).join(""); })()}</div>
-  </article>
-
   <article class="box" style="display:grid;gap:10px">
     <h3>Todos os estados</h3>
     <p class="muted" style="font-size:.92rem">Toque num estado para ver os detalhes. ▲ melhorou · ▼ piorou em relação ao ano anterior.</p>
