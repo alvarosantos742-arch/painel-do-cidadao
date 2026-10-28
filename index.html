@@ -423,6 +423,7 @@ const DATA = {
   posse: "2027-01-01T00:00:00-03:00",
   fim: "2031-01-01T00:00:00-03:00",
   eleicao: "2030-10-06T08:00:00-03:00",
+  eleicaoMunicipal: "2028-10-01T08:00:00-03:00",
   brasil: {
     desemp: [5.4, 5.8], renda: 2316, idebAI: 6.3, idebAI23: 6.0, idebEM: 4.5, idebEM23: 4.3, mvi: 19.1, mviVar: -8.2,
     ipca: 4.58, selic: 13.75, divida: 82.9, aprova: 45, desaprova: 48,
@@ -1655,11 +1656,13 @@ function brasilView(){
   <div class="box" style="display:grid;gap:12px">
     <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:center">
       <h2 id="cd-title" style="font-size:1.2rem">Faltam para a posse do presidente</h2>
-      <div style="display:flex;gap:6px" role="group" aria-label="Escolher contagem">
+      <div style="display:flex;flex-wrap:wrap;gap:6px" role="group" aria-label="Escolher contagem">
         <button type="button" class="btn" id="cd-a" aria-pressed="true">Posse</button>
-        <button type="button" class="btn" id="cd-b" aria-pressed="false">Próxima eleição</button>
+        <button type="button" class="btn" id="cd-c" aria-pressed="false">Prefeitos · 2028</button>
+        <button type="button" class="btn" id="cd-b" aria-pressed="false">Presidente · 2030</button>
       </div>
     </div>
+    <p class="muted" id="cd-note" style="font-size:.92rem"></p>
     <div class="count"><div><b id="cd-d">--</b><span>dias</span></div><div><b id="cd-h">--</b><span>horas</span></div><div><b id="cd-m">--</b><span>minutos</span></div><div><b id="cd-s">--</b><span>segundos</span></div></div>
     <div style="display:flex;justify-content:space-between;font-size:.92rem"><span>Mandato já passou</span><span class="mono" id="pct">0,0000%</span></div>
     <div class="progress"><b id="pct-bar" style="width:0%"></b></div>
@@ -1726,7 +1729,7 @@ function tick(){
   $("now").textContent = now.toLocaleTimeString("pt-BR",{timeZone:"America/Sao_Paulo"});
   if (!$("cd-d")) return;
   const posse = new Date(DATA.posse), fim = new Date(DATA.fim), el = new Date(DATA.eleicao);
-  let target = cdMode==="posse" ? posse : el;
+  let target = cdMode==="posse" ? posse : cdMode==="mun" ? new Date(DATA.eleicaoMunicipal) : el;
   if (cdMode==="posse" && now >= posse) { target = fim; $("cd-title").textContent = "Faltam para o fim do mandato"; }
   let diff = Math.max(0, target-now);
   const d=Math.floor(diff/864e5); diff-=d*864e5; const h=Math.floor(diff/36e5); diff-=h*36e5; const m=Math.floor(diff/6e4); diff-=m*6e4;
@@ -1788,8 +1791,11 @@ function route(){
     setTab("estados"); document.title = `Painel do Cidadão · ${U(k).nome}`; return;
   }
   $("view").innerHTML = brasilView();
-  const setM = m => { cdMode=m; $("cd-a").setAttribute("aria-pressed",m==="posse"); $("cd-b").setAttribute("aria-pressed",m!=="posse"); $("cd-title").textContent = m==="posse" ? "Faltam para a posse do presidente" : "Faltam para a próxima eleição (6/10/2030)"; tick(); };
-  $("cd-a").onclick = ()=>setM("posse"); $("cd-b").onclick = ()=>setM("eleicao");
+  const setM = m => { cdMode=m; $("cd-a").setAttribute("aria-pressed",m==="posse"); $("cd-b").setAttribute("aria-pressed",m==="eleicao"); $("cd-c").setAttribute("aria-pressed",m==="mun");
+    $("cd-title").textContent = m==="posse" ? "Faltam para a posse do presidente" : m==="mun" ? "Faltam para a eleição de prefeitos e vereadores (1º/10/2028)" : "Faltam para a eleição de presidente, governadores e Congresso (6/10/2030)";
+    $("cd-note").textContent = m==="mun" ? "É a próxima eleição: daqui a cerca de 2 anos, as cidades de todo o país escolhem prefeito e vereadores (exceto Brasília e Fernando de Noronha, que não têm prefeitura)." : m==="eleicao" ? "Eleição geral: presidente, governadores, senadores e deputados." : "";
+    tick(); };
+  $("cd-a").onclick = ()=>setM("posse"); $("cd-b").onclick = ()=>setM("eleicao"); $("cd-c").onclick = ()=>setM("mun");
   setM(cdMode);
   wireMap();
   const go = e => { const tr = e.target.closest("tr[data-k]"); if (tr) location.hash = tr.dataset.k; };
